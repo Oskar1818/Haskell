@@ -23,7 +23,6 @@ sizeSteps = [ size hand2
             , 2
             ]
 
-
 aCard1 :: Card
 aCard1 = (Card Ace Spades)
 
@@ -41,6 +40,8 @@ displayRank :: Rank -> String
 displayRank (Numeric n) = show n
 displayRank r = show r
 
+displaySuit :: Card -> String
+displaySuit (Card _ Hearts) = "\9829"
 
 display :: Hand -> String
 display [(Card r s), (Card f k)] = show ([Card r s, Card f k])
