@@ -42,4 +42,4 @@ display :: Hand -> String
 -- \9824 == Spades
 -- \9830 == Diamonds
 -- \9827 == Clubs
--- Test 
+-- Test
