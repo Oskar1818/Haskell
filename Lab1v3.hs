@@ -1,7 +1,6 @@
 {- Lab 1
    Authors: Clara Josefsson, Oskar Sturebrand, Valter Miari
-   Lab group: 59
- -}
+   Lab group: 59 -}
 ---------------------------------------------
 import MeasureTime
 import Test.QuickCheck
@@ -12,27 +11,20 @@ power n k
 power n 0  = 1
 power n k  = n * power n (k-1)
 
+
 -- A -------------------------
 -- stepsPower n k gives the number of steps that
 -- power n k takes to compute
-
 stepsPower :: Integer -> Integer -> Integer
 stepsPower n k
    | k >= 0 = k + 1
    | k < 0 = error "only uses non negative integers"
 
 
-
-
 -- B -------------------------
 -- power1
-
 power1 :: Integer -> Integer -> Integer
 power1 n k = product [n | x <- [1..k]]
-
-
--- power1 = product power1
-
 
 
 -- C -------------------------
@@ -45,11 +37,8 @@ power2 n k
    | odd k = n * power2 n (k-1)
 
 
-
-
 -- D -------------------------
 {-
-
 <Describe your test cases here>
 - error case : k < 0, ex. function 4 -1,
 Why this case doesn't generate an error in the test function,
@@ -64,8 +53,8 @@ a condition before the recursion in the function excecutes.
 - case2 : k = n > 0, ex. function 6 5
 A standard case which excecutes recursively.
  ...
-
  -}
+
 
 -- comparePower1
 comparePower1 :: Integer -> Integer -> Bool
