@@ -37,16 +37,6 @@ aHand = [Card (Numeric 7) Clubs, Card Queen Spades]
 
 
 -- Task A2
-display :: Hand -> String
-display = undefined
--- \9829 == Hearts
--- \9824 == Spades
--- \9830 == Diamonds
--- \9827 == Clubs
-
--- Task A3
-value :: Hand -> Int
-value = undefined
 
 -- to run in windows do
 -- chcp 65001
@@ -59,8 +49,15 @@ displayRank (Numeric n) = show n -- gives the rank of numeric cards
 displayRank r = show r -- gives the rank of suited cards
 
 displaySuit :: Suit -> String
-displaySuit Hearts = "\9829"
-displaySuit Spades = "\9824"
-displaySuit Diamonds = "\9830"
-displaySuit Clubs = "\9827"
+displaySuit Hearts = "\9829 "
+displaySuit Spades = "\9824 "
+displaySuit Diamonds = "\9830 "
+displaySuit Clubs = "\9827 "
 -- chcp 65001
+
+display :: Hand -> String
+display = unlines Hand
+
+-- Task A3
+value :: Hand -> Int
+value = undefined
