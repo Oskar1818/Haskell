@@ -56,7 +56,7 @@ displaySuit Clubs = "\9827 "
 -- chcp 65001
 
 display :: Hand -> String
-display = unlines Hand
+display hand = unlines [displayCard card | card <- hand]
 
 -- Task A3
 value :: Hand -> Int
