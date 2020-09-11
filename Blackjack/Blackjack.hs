@@ -54,7 +54,6 @@ displaySuit Hearts = "\9829 "
 displaySuit Spades = "\9824 "
 displaySuit Diamonds = "\9830 "
 displaySuit Clubs = "\9827 "
--- chcp 65001
 
 -- Takes a hand as input, declares a basecase for it to be able recursively go over
 -- the hand, then uses the help-functions to dislplay the cards on seperate lines
