@@ -48,7 +48,9 @@ display = undefined
 value :: Hand -> Int
 value = undefined
 
-
+-- to run in windows do
+-- chcp 65001
+-- then putStr (displayCard "anycard")
 displayCard :: Card -> String
 displayCard (Card r s) = displayRank r ++ " of " ++ displaySuit s
 
@@ -61,3 +63,4 @@ displaySuit Hearts = "\9829"
 displaySuit Spades = "\9824"
 displaySuit Diamonds = "\9830"
 displaySuit Clubs = "\9827"
+-- chcp 65001
