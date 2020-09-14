@@ -111,4 +111,6 @@ prop_size_fullDeck :: Bool
 prop_size_fullDeck = size fullDeck == 52
 
 draw :: Deck -> Hand -> (Deck, Hand)
-draw Deck == [] = error "draw: the deck is empty"
+draw deck hand
+   | size deck < 1 = error "draw: the deck is empty"
+--draw deck hand = (Deck, Hand)
