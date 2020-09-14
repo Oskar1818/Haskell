@@ -15,11 +15,20 @@ aCard1 = (Card Ace Spades)
 aCard2 :: Card -- Another test card
 aCard2 = (Card (Numeric 9) Diamonds)
 
+aCard3 :: Card
+aCard3 = (Card (Numeric 7) Clubs)
+
 aHand :: Hand -- A test hand
 aHand = [aCard1, aCard2]
 
+emptyHand :: Hand
+emptyHand = []
+
 hand2 :: Hand -- Another test hand
 hand2 = [Card (Numeric 2) Hearts, Card Jack Spades]
+
+aDeck :: Deck
+aDeck = [aCard1, aCard2, aCard1]
 
 
 -- Task A1
@@ -113,4 +122,5 @@ prop_size_fullDeck = size fullDeck == 52
 draw :: Deck -> Hand -> (Deck, Hand)
 draw deck hand
    | size deck < 1 = error "draw: the deck is empty"
+   | otherwise = ((drop 1 deck), (head deck : hand))
 --draw deck hand = (Deck, Hand)
