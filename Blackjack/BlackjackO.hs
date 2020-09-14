@@ -21,6 +21,9 @@ aHand = [aCard1, aCard2]
 hand2 :: Hand -- Another test hand
 hand2 = [Card (Numeric 2) Hearts, Card Jack Spades]
 
+aDeck :: Deck
+aDeck = []
+
 
 -- Task A1
 sizeSteps :: [Int] -- Prints a list of size hand for every step in sizeSteps
