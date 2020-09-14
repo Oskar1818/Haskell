@@ -116,5 +116,5 @@ prop_size_fullDeck = size fullDeck == 52
 
 -- Task B2
 draw :: Deck -> Hand -> (Deck, Hand)
-draw Deck Hand
-  | Deck <= 0 = error "draw: The deck is empty."
+draw d h
+  | size d < 0 = error "draw: The deck is empty."
