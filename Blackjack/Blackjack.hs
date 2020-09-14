@@ -1,38 +1,40 @@
+ -- Lab 2, Blackjack
+-- Authors: Clara Josefsson, Oskar Sturebrand, Valter Miari
+-- Lab group: 59
+
 module Blackjack where
 
 import Cards
 import RunGame
 import Test.QuickCheck hiding (shuffle)
 
-hand2 :: Hand
-hand2 = [Card (Numeric 2) Hearts, Card Jack Spades]
-
--- Describes the steps size takes
-sizeSteps :: [Int]
-sizeSteps = [ size hand2 -- Between the [], Size hand 2 is evaluated by hand.
-            , size (Card (Numeric 2) Hearts : (Card Jack Spades : []))
-            , 1 + size ((Card Jack Spades : []))
-            , 1 + 1 + size []
-            , 1 + 1 + 0
-            , 2
-            ]
-
--- A test card
-aCard1 :: Card
+-- Cards and hands
+aCard1 :: Card -- A test card
 aCard1 = (Card Ace Spades)
 
--- A test card
-aCard2 :: Card
+aCard2 :: Card -- Another test card
 aCard2 = (Card (Numeric 9) Diamonds)
 
--- A test hand
-aHand :: Hand
+aHand :: Hand -- A test hand
 aHand = [aCard1, aCard2]
 
--- to run in windows do
--- chcp 65001
--- then putStr (displayCard "anycard")
-displayCard :: Card -> String
+hand2 :: Hand -- Another test hand
+hand2 = [Card (Numeric 2) Hearts, Card Jack Spades]
+
+
+-- Task A1
+sizeSteps :: [Int] -- Prints a list of size hand for every step in sizeSteps
+sizeSteps =
+    [ size hand2 -- Between the [], size hand2 is evaluated by hand.
+      , size (Card (Numeric 2) Hearts : (Card Jack Spades : []))
+      , 1 + size ((Card Jack Spades : []))
+      , 1 + 1 + size []
+      , 1 + 1 + 0
+      , 2 ]
+
+
+-- Task A2
+displayCard :: Card -> String -- Displays the card in a readable way.
 displayCard (Card r s) = displayRank r ++ " of " ++ displaySuit s
 
 -- shows the rank
