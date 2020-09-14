@@ -87,7 +87,7 @@ valueTot (x:xs) = valueCard x + valueTot xs
 -- aces it converts them to 1 instead of 11.
 value :: Hand -> Int
 value hand | valueTot hand > 21 = valueTot hand - (10 * numberOfAces hand)
-          | otherwise = valueTot hand
+           | otherwise = valueTot hand
 
 
 gameOver :: Hand -> Bool
@@ -95,10 +95,10 @@ gameOver hand = value hand > 21
 
 winner :: Hand -> Hand -> Player
 winner handGuest handBank | gameOver (handBank) = Guest
-                         | gameOver (handGuest) = Bank
-                         | value(handBank) > value(handGuest) = Bank
-                         | value(handGuest) > value(handBank) = Guest
-                         | value(handGuest) == value(handBank) = Bank
+                          | gameOver (handGuest) = Bank
+                          | value(handBank) > value(handGuest) = Bank
+                          | value(handGuest) > value(handBank) = Guest
+                          | value(handGuest) == value(handBank) = Bank
 
 --Task B1
 ranks :: [Rank]
@@ -117,4 +117,4 @@ prop_size_fullDeck = size fullDeck == 52
 -- Task B2
 draw :: Deck -> Hand -> (Deck, Hand)
 draw d h
-  | size d < 0 = error "draw: The deck is empty."
+  | size d < 1 = error "draw: The deck is empty."
