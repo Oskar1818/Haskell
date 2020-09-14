@@ -1,4 +1,4 @@
- -- Lab 2, Blackjack, test 123
+ -- Lab 2, Blackjack
 -- Authors: Clara Josefsson, Oskar Sturebrand, Valter Miari
 -- Lab group: 59
 
@@ -96,3 +96,16 @@ winner handGuest handBank | gameOver (handBank) = Guest
                           | value(handBank) > value(handGuest) = Bank
                           | value(handGuest) > value(handBank) = Guest
                           | value(handGuest) == value(handBank) = Bank
+
+--Task B1
+ranks :: [Rank]
+ranks = [Ace, King, Queen, Jack] ++ [Numeric n | n <- [2..10]]
+
+suits :: [Suit]
+suits = [Hearts, Diamonds, Spades, Clubs]
+
+fullDeck :: Deck
+fullDeck = [ Card rank suit | rank <- ranks, suit <- suits]
+
+prop_size_fullDeck :: Bool
+prop_size_fullDeck = size fullDeck == 52
