@@ -1,4 +1,4 @@
- -- Lab 2, Blackjack
+ -- Lab 2, Blackjack, test 123
 -- Authors: Clara Josefsson, Oskar Sturebrand, Valter Miari
 -- Lab group: 59
 
