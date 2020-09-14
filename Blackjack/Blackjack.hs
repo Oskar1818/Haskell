@@ -4,24 +4,16 @@ import Cards
 import RunGame
 import Test.QuickCheck hiding (shuffle)
 
--- Size hand2 evaluated by hand
-{-  size hand2
-    = size (Card (Numeric 2) Hearts : (Card Jack Spades : []))
-    = 1 + size ((Card Jack Spades : []))
-    = 1 + 1 + size []
-    = 1 + 1 + 0
-    = 2   -}
-
 hand2 :: Hand
 hand2 = [Card (Numeric 2) Hearts, Card Jack Spades]
 
 -- Describes the steps size takes
 sizeSteps :: [Int]
-sizeSteps = [ size hand2
+sizeSteps = [ size hand2 -- Between the [], Size hand 2 is evaluated by hand.
             , size (Card (Numeric 2) Hearts : (Card Jack Spades : []))
             , 1 + size ((Card Jack Spades : []))
             , 1 + 1 + size []
-            , 1 + 1 + 0 -- might not be nececcary
+            , 1 + 1 + 0
             , 2
             ]
 
