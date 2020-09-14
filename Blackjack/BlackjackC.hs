@@ -21,9 +21,6 @@ aHand = [aCard1, aCard2]
 hand2 :: Hand -- Another test hand
 hand2 = [Card (Numeric 2) Hearts, Card Jack Spades]
 
-aDeck :: Deck
-aDeck = []
-
 
 -- Task A1
 sizeSteps :: [Int] -- Prints a list of size hand for every step in sizeSteps
@@ -87,7 +84,7 @@ valueTot (x:xs) = valueCard x + valueTot xs
 -- aces it converts them to 1 instead of 11.
 value :: Hand -> Int
 value hand | valueTot hand > 21 = valueTot hand - (10 * numberOfAces hand)
-           | otherwise = valueTot hand
+          | otherwise = valueTot hand
 
 
 gameOver :: Hand -> Bool
@@ -95,10 +92,10 @@ gameOver hand = value hand > 21
 
 winner :: Hand -> Hand -> Player
 winner handGuest handBank | gameOver (handBank) = Guest
-                          | gameOver (handGuest) = Bank
-                          | value(handBank) > value(handGuest) = Bank
-                          | value(handGuest) > value(handBank) = Guest
-                          | value(handGuest) == value(handBank) = Bank
+                         | gameOver (handGuest) = Bank
+                         | value(handBank) > value(handGuest) = Bank
+                         | value(handGuest) > value(handBank) = Guest
+                         | value(handGuest) == value(handBank) = Bank
 
 --Task B1
 ranks :: [Rank]
@@ -113,8 +110,7 @@ fullDeck = [ Card rank suit | rank <- ranks, suit <- suits]
 prop_size_fullDeck :: Bool
 prop_size_fullDeck = size fullDeck == 52
 
-
--- Task B2
+--Task B2
 draw :: Deck -> Hand -> (Deck, Hand)
-draw d h
-  | size d < 1 = error "draw: The deck is empty."
+draw deck hand
+  | size d < 1 = error "draw: The deck is empty" 
