@@ -110,6 +110,7 @@ fullDeck = [ Card rank suit | rank <- ranks, suit <- suits]
 prop_size_fullDeck :: Bool
 prop_size_fullDeck = size fullDeck == 52
 
+-- Task B2
 draw :: Deck -> Hand -> (Deck, Hand)
 draw deck hand
    | size deck < 1 = error "draw: the deck is empty"
