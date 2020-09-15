@@ -27,8 +27,14 @@ emptyHand = []
 hand2 :: Hand -- Another test hand
 hand2 = [Card (Numeric 2) Hearts, Card Jack Spades]
 
+aDeck2 :: Deck
+aDeck2 = [aCard1, aCard1,aCard1,aCard1,aCard1,aCard1,aCard1,aCard1,aCard1,aCard1,aCard1,aCard1,aCard1,aCard1,aCard1,aCard1,aCard1,aCard1,aCard1]
+
 aDeck :: Deck
 aDeck = [aCard1, aCard2, aCard1]
+
+empty :: [a]
+empty = []
 
 
 -- Task A1
@@ -124,3 +130,15 @@ draw deck hand
    | size deck < 1 = error "draw: the deck is empty"
    | otherwise = ((drop 1 deck), (head deck : hand))
 --draw deck hand = (Deck, Hand)
+
+playBank' :: Deck -> Hand -> Hand
+playBank' deck bankHand
+  | value bankHand < 16 = playBank' deck' bankHand'
+  | otherwise = bankHand
+    where (deck', bankHand') = draw deck bankHand
+
+playBank :: Deck -> Hand
+playBank deck = playBank' deck emptyHand -- probably "bankHand" with wrapper
+
+shuffle :: [Double] -> Deck -> Deck
+shuffle r deck = r deck
