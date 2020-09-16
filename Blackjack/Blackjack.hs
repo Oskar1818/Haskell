@@ -1,4 +1,4 @@
- -- Lab 2, Blackjack
+-- Lab 2, Blackjack
 -- Authors: Clara Josefsson, Oskar Sturebrand, Valter Miari
 -- Lab group: 59
 
@@ -15,22 +15,37 @@ aCard1 = (Card Ace Spades)
 aCard2 :: Card -- Another test card
 aCard2 = (Card (Numeric 9) Diamonds)
 
+aCard3 :: Card
+aCard3 = (Card (Numeric 7) Clubs)
+
 aHand :: Hand -- A test hand
 aHand = [aCard1, aCard2]
 
+emptyHand :: Hand
+emptyHand = []
+
 hand2 :: Hand -- Another test hand
 hand2 = [Card (Numeric 2) Hearts, Card Jack Spades]
+
+aDeck2 :: Deck
+aDeck2 = [aCard1, aCard1,aCard1,aCard1,aCard1,aCard1,aCard1,aCard1,aCard1,aCard1,aCard1,aCard1,aCard1,aCard1,aCard1,aCard1,aCard1,aCard1,aCard1]
+
+aDeck :: Deck
+aDeck = [aCard1, aCard2, aCard1]
+
+empty :: [a]
+empty = []
 
 
 -- Task A1
 sizeSteps :: [Int] -- Prints a list of size hand for every step in sizeSteps
 sizeSteps =
-    [ size hand2 -- Between the [], size hand2 is evaluated by hand.
-      , size (Card (Numeric 2) Hearts : (Card Jack Spades : []))
-      , 1 + size ((Card Jack Spades : []))
-      , 1 + 1 + size []
-      , 1 + 1 + 0
-      , 2 ]
+   [ size hand2 -- Between the [], size hand2 is evaluated by hand.
+     , size (Card (Numeric 2) Hearts : (Card Jack Spades : []))
+     , 1 + size ((Card Jack Spades : []))
+     , 1 + 1 + size []
+     , 1 + 1 + 0
+     , 2 ]
 
 
 -- Task A2
@@ -84,7 +99,7 @@ valueTot (x:xs) = valueCard x + valueTot xs
 -- aces it converts them to 1 instead of 11.
 value :: Hand -> Int
 value hand | valueTot hand > 21 = valueTot hand - (10 * numberOfAces hand)
-           | otherwise = valueTot hand
+          | otherwise = valueTot hand
 
 
 gameOver :: Hand -> Bool
@@ -111,4 +126,19 @@ prop_size_fullDeck :: Bool
 prop_size_fullDeck = size fullDeck == 52
 
 draw :: Deck -> Hand -> (Deck, Hand)
-draw Deck == [] = error "draw: the deck is empty"
+draw deck hand
+   | size deck < 1 = error "draw: the deck is empty"
+   | otherwise = ((drop 1 deck), (head deck : hand))
+--draw deck hand = (Deck, Hand)
+
+playBank' :: Deck -> Hand -> Hand
+playBank' deck bankHand
+  | value bankHand < 16 = playBank' deck' bankHand'
+  | otherwise = bankHand
+    where (deck', bankHand') = draw deck bankHand
+
+playBank :: Deck -> Hand
+playBank deck = playBank' deck emptyHand -- probably "bankHand" with wrapper
+
+shuffle :: [Double] -> Deck -> Deck
+shuffle r deck = r deck
