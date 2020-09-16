@@ -36,7 +36,9 @@ aDeck = [aCard1, aCard2, aCard1]
 empty :: [a]
 empty = []
 
+rand :: [Double]
 rand = [0.75282073,1.914072e-2,0.25675058,0.20798653,0.36509913,0.6199135,0.552688,0.83191794,0.15301853,0.11863166,0.88036937,0.2985288,0.9647622,0.94379723,0.6323673,0.42535686,0.5850328,0.80125904,0.69982773,0.51680106,0.6051177,0.36048424,0.6814409,0.13755643,0.5730732,0.9105347,0.9013001,0.96504617,0.13346481,0.74288315,0.94035643,0.16613853,0.3206522,0.97053397,0.7711101,0.9005442,0.54222107,0.2805823,4.6526194e-3,9.8266125e-2,0.8040339,0.59864,0.74254036,0.6475005,0.23663306,0.2063654,0.44996387,0.9819821,0.43996918,0.7625793,0.12609422,0.45685077]
+
 -- Task A1
 sizeSteps :: [Int] -- Prints a list of size hand for every step in sizeSteps
 sizeSteps =
@@ -146,13 +148,40 @@ playBank :: Deck -> Hand
 playBank deck = playBank' deck emptyHand -- probably "bankHand" with wrapper
 
 
--- Task B4
+-- Task B4 - klar :)
 shuffle :: [Double] -> Deck -> Deck
-shuffle lint deck = undefined
-
-getnthcard :: [Int] -> Deck -> (Card, Deck)
-getnthcard lint deck = [(i,c) | i <- lint,
-                                c <- deck ]
+shuffle rand deck = [getcard x deck| x <- (randomInteger rand)]
 
 randomInteger :: [Double] -> [Int]
 randomInteger (x:xs) = [floor(52*x) | x <- (x:xs)]
+
+getcard :: Int -> Deck -> Card -- Returns the n:th card in a Deck
+getcard i d = d!!(i)
+
+
+-- Task B5
+belongsTo :: Card -> Deck -> Bool
+c `belongsTo` []      = False
+c `belongsTo` (c':cs) = c == c' || c `belongsTo` cs
+
+prop_shuffle :: Card -> Deck -> Rand -> Bool
+prop_shuffle card deck (Rand randomlist) =
+    card `belongsTo` deck == card `belongsTo` shuffle randomlist deck
+
+prop_size_shuffle :: Rand -> Deck -> Bool
+prop_size_shuffle (Rand randomlist) deck = undefined -- Måste fortfarande def.
+
+-- Task B6 -- exeption, stack overflow
+implementation = Interface
+  {  iFullDeck  = fullDeck
+  ,  iValue     = value
+  ,  iDisplay   = display
+  ,  iGameOver  = gameOver
+  ,  iWinner    = winner
+  ,  iDraw      = draw
+  ,  iPlayBank  = playBank
+  ,  iShuffle   = shuffle
+  }
+
+main :: IO ()
+main = runGame implementation
