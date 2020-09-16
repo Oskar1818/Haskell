@@ -113,4 +113,16 @@ prop_size_fullDeck = size fullDeck == 52
 --Task B2
 draw :: Deck -> Hand -> (Deck, Hand)
 draw deck hand
-  | size d < 1 = error "draw: The deck is empty" 
+  | size d < 1 = error "draw: The deck is empty"
+  | otherwise ((drop 1 deck), (head deck : hand))
+
+--Task B3
+playBank' :: Deck -> Hand -> Hand
+playBank' deck bankHand
+  | value bankHand < 16 = playBank' deck' bankHand'
+  | otherwise = bankHand
+
+playBank :: Deck -> Hand
+
+--Task B4
+shuffle :: [Double] -> Deck -> Deck
