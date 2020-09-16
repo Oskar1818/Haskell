@@ -112,6 +112,7 @@ winner handGuest handBank | gameOver (handBank) = Guest
                           | value(handGuest) > value(handBank) = Guest
                           | value(handGuest) == value(handBank) = Bank
 
+
 --Task B1
 ranks :: [Rank]
 ranks = [Ace, King, Queen, Jack] ++ [Numeric n | n <- [2..10]]
@@ -125,12 +126,16 @@ fullDeck = [ Card rank suit | rank <- ranks, suit <- suits]
 prop_size_fullDeck :: Bool
 prop_size_fullDeck = size fullDeck == 52
 
+
+-- Task B2
 draw :: Deck -> Hand -> (Deck, Hand)
 draw deck hand
    | size deck < 1 = error "draw: the deck is empty"
    | otherwise = ((drop 1 deck), (head deck : hand))
 --draw deck hand = (Deck, Hand)
 
+
+-- Task B3
 playBank' :: Deck -> Hand -> Hand
 playBank' deck bankHand
   | value bankHand < 16 = playBank' deck' bankHand'
@@ -140,5 +145,29 @@ playBank' deck bankHand
 playBank :: Deck -> Hand
 playBank deck = playBank' deck emptyHand -- probably "bankHand" with wrapper
 
+randomlist = []
+-- shuffle [0.2,0.3,....]
+-- Task B4
 shuffle :: [Double] -> Deck -> Deck
-shuffle r deck = r deck
+shuffle r deck = undefined --r deck
+
+getnthcard :: Int -> Deck -> (Card, Deck)
+getnthcard = undefined
+
+randomInteger :: [Double] -> Int
+randomInteger d = undefined
+{-
+[0.2,0.3,0.4,....]
+(x:xs)
+x = 0.2
+xs = .....
+
+
+x = 0.2
+deck = 52 cards
+generate a numnber between 0 and 51 using 0.2
+5 * x * 10
+
+52 * 0.2 = 10.4 ~ 10
+
+-}
