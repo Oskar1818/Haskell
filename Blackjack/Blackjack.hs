@@ -3,21 +3,15 @@
 -- Lab group: 59
 
 module Blackjack where
-
 import Cards
 import RunGame
 import Test.QuickCheck hiding (shuffle)
 
--- Cards and hands
 
-hand2 :: Hand -- Another test hand
+-- Cards and hands
+hand2 :: Hand -- A hand for sizeSteps
 hand2 = [Card (Numeric 2) Hearts, Card Jack Spades]
 
-hand3 :: Hand
-hand3 = [Card (Numeric 10) Hearts, Card (Numeric 10) Spades, Card (Numeric 10) Diamonds]
-
-hand4 :: Hand
-hand4 = [Card (Numeric 10) Hearts, Card (Numeric 10) Spades, Card (Numeric 4) Diamonds]
 
 -- Task A1
 sizeSteps :: [Int] -- Prints a list of size hand for every step in sizeSteps
@@ -102,16 +96,16 @@ winner handGuest handBank
 
 
 --Task B1
-ranks :: [Rank]
+ranks :: [Rank] -- List of all ranks
 ranks = [Ace, King, Queen, Jack] ++ [Numeric n | n <- [2..10]]
 
-suits :: [Suit]
+suits :: [Suit] -- List of all suits
 suits = [Hearts, Diamonds, Spades, Clubs]
 
-fullDeck :: Deck
+fullDeck :: Deck -- A standard deck with all 52 cards
 fullDeck = [ Card rank suit | rank <- ranks, suit <- suits]
 
-prop_size_fullDeck :: Bool
+prop_size_fullDeck :: Bool -- returns true if fullDeck contains 52 cards 
 prop_size_fullDeck = size fullDeck == 52
 
 
@@ -185,4 +179,4 @@ implementation = Interface
   }
 
 main :: IO ()
-main = runGame implementation --hello
+main = runGame implementation
