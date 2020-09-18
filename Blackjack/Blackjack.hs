@@ -159,27 +159,17 @@ playBank :: Deck -> Hand
 playBank deck = playBank' deck emptyHand -- probably "bankHand" with wrapper
 
 
--- Task B4 - klar :)                -- to test in win, with signs do:
-shuffle :: [Double] -> Deck -> Deck -- putStr(display(shuffle rand4 fullDeck))
-shuffle rand deck = shuffle' rand deck [] --[getCard x deck| x <- (randomInteger rand)]
+-- Task B4
+-- putStr(display(shuffle rand4 fullDeck))
+shuffle :: [Double] -> Deck -> Deck
+shuffle rand deck = shuffle' rand deck []
 
 shuffle' :: [Double] -> Deck -> Deck -> Deck
 shuffle' rand [] newDeck = newDeck
-shuffle' rand oldDeck newDeck = x ++ newDeck shuflle' rand oldDeck' newDeck
+shuffle' (x:xs) oldDeck newDeck = shuffle' xs oldDeck' (x':newDeck)
   where
-    oldDeck' = removeCard (randomInteger rand oldDeck) oldDeck
-  where
-    x = getCard rand oldDeck
-
---newdeck = x ++ xs
---where
---  x = getCard i d
---  xs = removeCard i d
-
-
--- (x:xs) = [x | x <- (getCard i d)], [xs | xs <- removeCard i d]
---[x | (x:xs)]
-
+    x' = getCard (randomInteger x oldDeck) oldDeck -- a card
+    oldDeck' = removeCard (randomInteger x oldDeck) oldDeck
 
 randomInteger :: Double -> Deck -> Int
 randomInteger d deck = ceiling (size deck * d) --[ceiling(52*x) | x <- (x:xs)]
