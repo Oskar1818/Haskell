@@ -161,13 +161,34 @@ playBank deck = playBank' deck emptyHand -- probably "bankHand" with wrapper
 
 -- Task B4 - klar :)                -- to test in win, with signs do:
 shuffle :: [Double] -> Deck -> Deck -- putStr(display(shuffle rand4 fullDeck))
-shuffle rand deck = [getcard x deck| x <- (randomInteger rand)]
+shuffle rand deck = shuffle' rand deck [] --[getCard x deck| x <- (randomInteger rand)]
 
-randomInteger :: [Double] -> [Int]
-randomInteger (x:xs) = [floor(52*x) | x <- (x:xs)]
+shuffle' :: [Double] -> Deck -> Deck -> Deck
+shuffle' rand [] newDeck = newDeck
+shuffle' rand oldDeck newDeck = x ++ newDeck shuflle' rand oldDeck' newDeck
+  where
+    oldDeck' = removeCard (randomInteger rand oldDeck) oldDeck
+  where
+    x = getCard rand oldDeck
 
-getcard :: Int -> Deck -> Card -- Returns the n:th card in a Deck
-getcard i d = d!!(i)
+--newdeck = x ++ xs
+--where
+--  x = getCard i d
+--  xs = removeCard i d
+
+
+-- (x:xs) = [x | x <- (getCard i d)], [xs | xs <- removeCard i d]
+--[x | (x:xs)]
+
+
+randomInteger :: Double -> Deck -> Int
+randomInteger d deck = ceiling (size deck * d) --[ceiling(52*x) | x <- (x:xs)]
+
+getCard :: Int -> Deck -> Card -- Returns the n:th card in a Deck
+getCard i d = d!!(i-1)
+
+removeCard :: Int -> Deck -> Deck
+removeCard i deck = take (i-1) deck ++ drop i deck
 
 
 -- Task B5
@@ -181,6 +202,10 @@ prop_shuffle card deck (Rand randomlist) =
 
 prop_size_shuffle :: Rand -> Deck -> Bool
 prop_size_shuffle (Rand randomlist) deck = length deck == length (shuffle randomlist deck)
+
+testF = do
+  Rand r <- generate arbitrary
+  undefined
 
 -- Task B6 -- exeption, stack overflow
 implementation = Interface
