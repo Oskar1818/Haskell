@@ -41,7 +41,7 @@ gameLoop i deck guest = do
    else do
     putStr (   "Draw "
             ++ (if null guest then "a " else "another ")
-            ++ "card? [y] ")
+            ++ "card? [y/n] ")
     yn <- getLine
     if null yn || not (map toLower yn == "n") then do
       let (deck', guest') = iDraw i deck guest
