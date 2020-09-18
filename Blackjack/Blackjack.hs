@@ -10,14 +10,8 @@ import Test.QuickCheck hiding (shuffle)
 
 -- Cards and hands
 
-hand2 :: Hand -- Another test hand
+hand2 :: Hand -- A test hand
 hand2 = [Card (Numeric 2) Hearts, Card Jack Spades]
-
-hand3 :: Hand
-hand3 = [Card (Numeric 10) Hearts, Card (Numeric 10) Spades, Card (Numeric 10) Diamonds]
-
-hand4 :: Hand
-hand4 = [Card (Numeric 10) Hearts, Card (Numeric 10) Spades, Card (Numeric 4) Diamonds]
 
 -- Task A1
 sizeSteps :: [Int] -- Prints a list of size hand for every step in sizeSteps
@@ -49,15 +43,16 @@ displaySuit Spades = "\9824 "
 displaySuit Diamonds = "\9830 "
 displaySuit Clubs = "\9827 "
 
--- Takes a hand as input, declares a basecase for it to be able recursively go over
--- the hand, then uses the help-functions to dislplay the cards on seperate lines
--- with \n
+{- Takes a hand as input, declares a basecase for it to be able recursively go over
+he hand, then uses the help-functions to dislplay the cards on seperate lines
+with \n -}
+
 display :: Hand -> String
 display [] = ""
 display (x:xs) = displayCard x ++ "\n" ++ display xs
 
--- Declares the values of the ranks, as for the Ace; it evaluates to 1 in the
--- numberOfAces function, so it is not nececcary here
+{-Declares the values of the ranks, as for the Ace; it evaluates to 1 in the
+numberOfAces function, so it is not nececcary here -}
 valueRank :: Rank -> Int
 valueRank (Numeric n) = n
 valueRank Ace         = 11
@@ -70,8 +65,6 @@ numberOfAces [] = 0
 numberOfAces (Card Ace _:restOfHand)  = 1 + numberOfAces restOfHand
 numberOfAces (_:restOfHand) = numberOfAces restOfHand
 
--- sum [ 1 | card <- hand, (rank card) == Ace]
-
 -- value
 valueCard :: Card -> Int
 valueCard (Card r s) = valueRank r
@@ -80,16 +73,17 @@ valueTot :: Hand -> Int
 valueTot [] = 0
 valueTot (x:xs) = valueCard x + valueTot xs
 
--- This function calculates if the value overexceedes 21 and if so, if it contains an or several
--- aces it converts them to 1 instead of 11.
+{- This function calculates if the value overexceedes 21 and if so,
+if it contains an or several aces it converts them to 1 instead of 11. -}
 value :: Hand -> Int
 value hand | valueTot hand > 21 = valueTot hand - (10 * numberOfAces hand)
           | otherwise = valueTot hand
 
-
+-- If the hand value is over 21, it's game over
 gameOver :: Hand -> Bool
 gameOver hand = value hand > 21
-
+{- Compares the different cases in wich the game can end and
+then determines the winner -}
 winner :: Hand -> Hand -> Player
 winner handGuest handBank
                           | gameOver (handGuest) = Bank
