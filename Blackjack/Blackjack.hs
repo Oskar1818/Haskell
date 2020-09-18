@@ -110,14 +110,16 @@ prop_size_fullDeck = size fullDeck == 52
 
 
 -- Task B2
+-- Draws card from a deck and puts it in a hand
 draw :: Deck -> Hand -> (Deck, Hand)
 draw deck hand
    | size deck < 1 = error "draw: the deck is empty"
    | otherwise = ((drop 1 deck), (head deck : hand))
---draw deck hand = (Deck, Hand)
 
 
 -- Task B3
+{- Takes a deck and a hand, if the value of the bankHand is less than 16,
+it calls on the draws function, until the value is 16 or greater. -}
 playBank' :: Deck -> Hand -> Hand
 playBank' deck bankHand
   | value bankHand < 16 = playBank' deck' bankHand'
@@ -125,14 +127,18 @@ playBank' deck bankHand
     where (deck', bankHand') = draw deck bankHand
 
 playBank :: Deck -> Hand
-playBank deck = playBank' deck [] -- probably "bankHand" with wrapper
+playBank deck = playBank' deck []
 
 
 -- Task B4
 -- putStr(display(shuffle rand4 fullDeck))
+-- Rand r <- generate arbitrary usefull way to generate [Double]
 shuffle :: [Double] -> Deck -> Deck
 shuffle rand deck = shuffle' rand deck []
 
+{- A recursive function that fist declares the basecase; where the oldDeck is empty
+then calls the function again, recursively, this time with the oldDeck where the x card is removed
+and the newDeck has the x card -}
 shuffle' :: [Double] -> Deck -> Deck -> Deck
 shuffle' rand [] newDeck = newDeck
 shuffle' (x:xs) oldDeck newDeck = shuffle' xs oldDeck' (x':newDeck)
@@ -140,31 +146,35 @@ shuffle' (x:xs) oldDeck newDeck = shuffle' xs oldDeck' (x':newDeck)
     x' = getCard (randomInteger x oldDeck) oldDeck -- a card
     oldDeck' = removeCard (randomInteger x oldDeck) oldDeck
 
+{- Takes a Double and the current size of the deck, then retuns a Int as to not
+process the same possition in the deck twice -}
 randomInteger :: Double -> Deck -> Int
-randomInteger d deck = ceiling (size deck * d) --[ceiling(52*x) | x <- (x:xs)]
+randomInteger d deck = ceiling (size deck * d) -- [ceiling(52*x) | x <- (x:xs)]
 
-getCard :: Int -> Deck -> Card -- Returns the n:th card in a Deck
-getCard i d = d!!(i-1)
+-- Takes a deck and an Integer n, and retuns a card in the n-1:th place in a list.
+getCard :: Int -> Deck -> Card
+getCard n deck = deck!!(n-1)
 
+-- Takes a deck and an Integer and returns everything but the n-1:th card in a deck.
 removeCard :: Int -> Deck -> Deck
-removeCard i deck = take (i-1) deck ++ drop i deck
+removeCard n deck = take (n-1) deck ++ drop n deck
 
 
 -- Task B5
+-- Determines if a card belongs to a deck
 belongsTo :: Card -> Deck -> Bool
 c `belongsTo` []      = False
 c `belongsTo` (c':cs) = c == c' || c `belongsTo` cs
 
+-- Determines if the deck contains the same cards after it's shuffled
 prop_shuffle :: Card -> Deck -> Rand -> Bool
 prop_shuffle card deck (Rand randomlist) =
     card `belongsTo` deck == card `belongsTo` shuffle randomlist deck
 
+-- Determines if  the lenght of a deck is the same after the deck is shuffled
 prop_size_shuffle :: Rand -> Deck -> Bool
 prop_size_shuffle (Rand randomlist) deck = length deck == length (shuffle randomlist deck)
 
-{-testF = do
-  Rand r <- generate arbitrary
-  undefined -}
 
 -- Task B6 -- exeption, stack overflow
 implementation = Interface
