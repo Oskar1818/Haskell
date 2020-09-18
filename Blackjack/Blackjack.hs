@@ -185,4 +185,4 @@ implementation = Interface
   }
 
 main :: IO ()
-main = runGame implementation
+main = runGame implementation --hello
