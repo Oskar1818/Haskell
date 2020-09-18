@@ -168,9 +168,9 @@ prop_shuffle card deck (Rand randomlist) =
 prop_size_shuffle :: Rand -> Deck -> Bool
 prop_size_shuffle (Rand randomlist) deck = length deck == length (shuffle randomlist deck)
 
-testF = do
+{-testF = do
   Rand r <- generate arbitrary
-  undefined
+  undefined -}
 
 -- Task B6 -- exeption, stack overflow
 implementation = Interface
