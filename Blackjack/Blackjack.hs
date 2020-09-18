@@ -180,7 +180,7 @@ prop_shuffle card deck (Rand randomlist) =
     card `belongsTo` deck == card `belongsTo` shuffle randomlist deck
 
 prop_size_shuffle :: Rand -> Deck -> Bool
-prop_size_shuffle (Rand randomlist) deck = length randomlist + length deck == length (shuffle randomlist deck) + length deck
+prop_size_shuffle (Rand randomlist) deck = length deck == length (shuffle randomlist deck)
 
 -- Task B6 -- exeption, stack overflow
 implementation = Interface
