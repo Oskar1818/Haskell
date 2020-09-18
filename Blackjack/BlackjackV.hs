@@ -33,9 +33,13 @@ aDeck2 = [aCard1, aCard1,aCard1,aCard1,aCard1,aCard1,aCard1,aCard1,aCard1,aCard1
 aDeck :: Deck
 aDeck = [aCard1, aCard2, aCard1]
 
+aBustHand :: Hand
+aBustHand = [aCard2, aCard2, aCard2]
+
 empty :: [a]
 empty = []
 
+rand = [0.75282073,1.914072e-2,0.25675058,0.20798653,0.36509913,0.6199135,0.552688,0.83191794,0.15301853,0.11863166,0.88036937,0.2985288,0.9647622,0.94379723,0.6323673,0.42535686,0.5850328,0.80125904,0.69982773,0.51680106,0.6051177,0.36048424,0.6814409,0.13755643,0.5730732,0.9105347,0.9013001,0.96504617,0.13346481,0.74288315,0.94035643,0.16613853,0.3206522,0.97053397,0.7711101,0.9005442,0.54222107,0.2805823,4.6526194e-3,9.8266125e-2,0.8040339,0.59864,0.74254036,0.6475005,0.23663306,0.2063654,0.44996387,0.9819821,0.43996918,0.7625793,0.12609422,0.45685077]
 
 -- Task A1
 sizeSteps :: [Int] -- Prints a list of size hand for every step in sizeSteps
@@ -141,4 +145,38 @@ playBank :: Deck -> Hand
 playBank deck = playBank' deck emptyHand -- probably "bankHand" with wrapper
 
 shuffle :: [Double] -> Deck -> Deck
-shuffle r deck = r deck
+shuffle = undefined
+
+randomInteger :: [Double] -> [Int]
+randomInteger (x:xs) = [floor(52*x) | x <- (x:xs)]
+
+getnthCard :: [Int] -> Deck -> (Card, Deck)
+getnthCard lint deck = -- match
+
+getnthcard :: [Int] -> Deck -> (Card, Deck)
+getnthcard lint deck = [(i,c) | i <- lint,
+                                c <- deck ]
+-- [(i,j) | i <- [1,2],
+--         j <- [1..4] ]
+randomInteger :: [Double] -> [Int]
+--randomInteger (x:xs) = floor(52*x)
+randomInteger (x:xs) = [floor(52*x) | x <- (x:xs)]
+-- randomInteger (x:xs) = x randomInteger x-xs -- 52 * 0.2 = 10.4 ~ 10
+-- valueTot (x:xs) = valueCard x + valueTot xs
+-- randomInteger (x:xs) = randomInteger floor(x*52) -- 52 * 0.2 = 10.4 ~ 10
+-- randomInteger (x:xs) =
+
+
+{-
+[0.2,0.3,0.4,....]
+(x:xs)
+x = 0.2
+xs = .....
+
+
+x = 0.2
+deck = 52 cards
+generate a numnber between 0 and 51 using 0.2
+5 * x * 10
+
+52 * 0.2 = 10.4 ~ 10
