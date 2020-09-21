@@ -97,7 +97,7 @@ winner handGuest handBank
 
 --Task B1
 ranks :: [Rank] -- List of all ranks
-ranks = [Ace, King, Queen, Jack] ++ [Numeric n | n <- [2..10]]
+ranks = [Numeric n | n <- [2..10]] ++ [Jack, Queen, King, Ace]
 
 suits :: [Suit] -- List of all suits
 suits = [Hearts, Diamonds, Spades, Clubs]
