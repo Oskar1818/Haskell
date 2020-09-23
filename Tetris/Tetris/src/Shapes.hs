@@ -29,7 +29,7 @@ showShape s = unlines [showRow r | r <- rows s]
   where
     showRow :: Row -> String
     showRow r = [showSquare s | s <- r]
-    
+
     showSquare Nothing      = '.'
     showSquare (Just Black) = '#' -- can change to '█' on linux/mac
     showSquare (Just Grey)  = 'g' -- can change to '▓'
@@ -44,13 +44,13 @@ instance Show Shape where
 -- | All 7 tetrominoes (all combinations of 4 connected blocks),
 -- see <https://en.wikipedia.org/wiki/Tetromino>
 allShapes :: [Shape]
-allShapes = [S (makeSquares s) | s <- shapes] 
+allShapes = [S (makeSquares s) | s <- shapes]
    where
       makeSquares = map (map colour)
       colour c    = lookup c [ ('I', Red), ('J', Grey), ('T', Blue)
                              , ('O', Yellow), ('Z',Cyan), ('L', Green)
                              , ('S', Purple) ]
-      shapes = 
+      shapes =
               [["I",
                 "I",
                 "I",
@@ -77,13 +77,16 @@ allShapes = [S (makeSquares s) | s <- shapes]
 
 -- ** A1
 emptyShape :: (Int, Int) -> Shape
-emptyShape = error "A1 emptyShape undefined"
+emptyShape (r, s) =  S (replicate r (emptyRow s))
+
+emptyRow :: Int -> Row
+emptyRow r = replicate r Nothing
 
 -- ** A2
 
 -- | The size (width and height) of a shape
 shapeSize :: Shape -> (Int, Int)
-shapeSize = error "A2 shapeSize undefined"
+shapeSize (S (x:xs)) = (length(x), length(x:xs))
 
 -- ** A3
 
