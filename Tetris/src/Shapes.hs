@@ -93,8 +93,13 @@ shapeSize (S (x:xs)) = (length(x), length(x:xs))
 -- ** A3
 
 -- | Count how many non-empty squares a shape contains
+aShape :: Shape
+aShape = (S [ ('I', Red), ('J', Grey), ('T', Blue)
+                       , ('O', Yellow), ('Z',Cyan), ('L', Green)
+                       , ('S', Purple) ])
+
 blockCount :: Shape -> Int
-blockCount = error "A3 blockCount undefined"
+blockCount (S (x:xs)) = length(x `concat` xs)
 
 -- * The Shape invariant
 
