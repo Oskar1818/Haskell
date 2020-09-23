@@ -93,13 +93,16 @@ shapeSize (S (x:xs)) = (length(x), length(x:xs))
 -- ** A3
 
 -- | Count how many non-empty squares a shape contains
+
+
+blockCount :: Shape -> Int
+blockCount (S (x:xs)) = length [x | x <- join(S (x:xs)), x /= Nothing]
+
 aShape :: Shape
 aShape = emptyShape(3, 2)
 
-blockCount :: Shape -> [Square]
---blockCount (S ())
-blockCount (S (x:xs)) = (concat (x:xs))
-
+join :: Shape -> [Square]
+join (S (x:xs)) = concat (x:xs)
 
 
 -- * The Shape invariant
