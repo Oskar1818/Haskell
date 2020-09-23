@@ -94,12 +94,13 @@ shapeSize (S (x:xs)) = (length(x), length(x:xs))
 
 -- | Count how many non-empty squares a shape contains
 aShape :: Shape
-aShape = (S [ ('I', Red), ('J', Grey), ('T', Blue)
-                       , ('O', Yellow), ('Z',Cyan), ('L', Green)
-                       , ('S', Purple) ])
+aShape = emptyShape(3, 2)
 
-blockCount :: Shape -> Int
-blockCount (S (x:xs)) = length(x `concat` xs)
+blockCount :: Shape -> [Square]
+--blockCount (S ())
+blockCount (S (x:xs)) = (concat (x:xs))
+
+
 
 -- * The Shape invariant
 

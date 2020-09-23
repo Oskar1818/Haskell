@@ -29,12 +29,12 @@ version :: Version
 version = Version [0,1,0,0] []
 bindir, libdir, dynlibdir, datadir, libexecdir, sysconfdir :: FilePath
 
-bindir     = "/Users/oskar/Documents/Github/Labs-Haskell/Tetris/Tetris/.stack-work/install/x86_64-osx/bb293da4a3703e2a65b5bb163a4a3da389b2f9c93fe3937669529f8acbf1ebb0/8.6.5/bin"
-libdir     = "/Users/oskar/Documents/Github/Labs-Haskell/Tetris/Tetris/.stack-work/install/x86_64-osx/bb293da4a3703e2a65b5bb163a4a3da389b2f9c93fe3937669529f8acbf1ebb0/8.6.5/lib/x86_64-osx-ghc-8.6.5/tetris-0.1.0.0-HAmfwmCSHdU7LSFzuy2tsd-tetris-exe"
-dynlibdir  = "/Users/oskar/Documents/Github/Labs-Haskell/Tetris/Tetris/.stack-work/install/x86_64-osx/bb293da4a3703e2a65b5bb163a4a3da389b2f9c93fe3937669529f8acbf1ebb0/8.6.5/lib/x86_64-osx-ghc-8.6.5"
-datadir    = "/Users/oskar/Documents/Github/Labs-Haskell/Tetris/Tetris/.stack-work/install/x86_64-osx/bb293da4a3703e2a65b5bb163a4a3da389b2f9c93fe3937669529f8acbf1ebb0/8.6.5/share/x86_64-osx-ghc-8.6.5/tetris-0.1.0.0"
-libexecdir = "/Users/oskar/Documents/Github/Labs-Haskell/Tetris/Tetris/.stack-work/install/x86_64-osx/bb293da4a3703e2a65b5bb163a4a3da389b2f9c93fe3937669529f8acbf1ebb0/8.6.5/libexec/x86_64-osx-ghc-8.6.5/tetris-0.1.0.0"
-sysconfdir = "/Users/oskar/Documents/Github/Labs-Haskell/Tetris/Tetris/.stack-work/install/x86_64-osx/bb293da4a3703e2a65b5bb163a4a3da389b2f9c93fe3937669529f8acbf1ebb0/8.6.5/etc"
+bindir     = "/Users/valtermiari/Desktop/Labs-Haskell/Tetris/.stack-work/install/x86_64-osx/f3d22c3f644f73143395f5e88a39561476f8ac961f8bbd9067ed5713d9ae2359/8.6.5/bin"
+libdir     = "/Users/valtermiari/Desktop/Labs-Haskell/Tetris/.stack-work/install/x86_64-osx/f3d22c3f644f73143395f5e88a39561476f8ac961f8bbd9067ed5713d9ae2359/8.6.5/lib/x86_64-osx-ghc-8.6.5/tetris-0.1.0.0-HAmfwmCSHdU7LSFzuy2tsd-tetris-exe"
+dynlibdir  = "/Users/valtermiari/Desktop/Labs-Haskell/Tetris/.stack-work/install/x86_64-osx/f3d22c3f644f73143395f5e88a39561476f8ac961f8bbd9067ed5713d9ae2359/8.6.5/lib/x86_64-osx-ghc-8.6.5"
+datadir    = "/Users/valtermiari/Desktop/Labs-Haskell/Tetris/.stack-work/install/x86_64-osx/f3d22c3f644f73143395f5e88a39561476f8ac961f8bbd9067ed5713d9ae2359/8.6.5/share/x86_64-osx-ghc-8.6.5/tetris-0.1.0.0"
+libexecdir = "/Users/valtermiari/Desktop/Labs-Haskell/Tetris/.stack-work/install/x86_64-osx/f3d22c3f644f73143395f5e88a39561476f8ac961f8bbd9067ed5713d9ae2359/8.6.5/libexec/x86_64-osx-ghc-8.6.5/tetris-0.1.0.0"
+sysconfdir = "/Users/valtermiari/Desktop/Labs-Haskell/Tetris/.stack-work/install/x86_64-osx/f3d22c3f644f73143395f5e88a39561476f8ac961f8bbd9067ed5713d9ae2359/8.6.5/etc"
 
 getBinDir, getLibDir, getDynLibDir, getDataDir, getLibexecDir, getSysconfDir :: IO FilePath
 getBinDir = catchIO (getEnv "tetris_bindir") (\_ -> return bindir)
