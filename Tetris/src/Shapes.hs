@@ -116,13 +116,11 @@ prop_Shape :: Shape -> Bool
 prop_Shape (S (x:xs)) = shapeSize (S (x:xs)) >= (1, 1)
 otherwise = False
 
--- * Test data generators
 
--- test tror den här blir svår
+-- * Test data generators
 -- ** A5
 -- | A random generator for colours
-
-genColour :: Gen Colour
+genColour :: Gen Colour -- sample genColour
 genColour = elements [Black, Red, Green, Yellow, Blue, Purple, Cyan, Grey]
 
 instance Arbitrary Colour where
@@ -131,18 +129,21 @@ instance Arbitrary Colour where
 
 -- ** A6
 -- | A random generator for shapes
-genShape :: Gen Shape
+genShape :: Gen Shape -- sample genShape
 genShape = elements allShapes
 
 instance Arbitrary Shape where
   arbitrary = genShape
+
+
 
 -- * Transforming shapes
 
 -- ** A7
 -- | Rotate a shape 90 degrees
 rotateShape :: Shape -> Shape
-rotateShape = error "A7 rotateShape undefined"
+rotateShape (S (xs)) = (S (transpose(reverse xs)))
+
 
 -- ** A8
 -- | shiftShape adds empty squares above and to the left of the shape
