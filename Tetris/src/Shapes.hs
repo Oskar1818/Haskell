@@ -8,6 +8,8 @@ import Test.QuickCheck
 
 -- * Shapes
 
+--testtest
+
 type Square = Maybe Colour
 
 data Colour = Black | Red | Green | Yellow | Blue | Purple | Cyan | Grey
