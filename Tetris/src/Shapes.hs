@@ -118,7 +118,7 @@ otherwise = False
 
 -- * Test data generators
 
--- test
+-- test tror den här blir svår
 -- ** A5
 -- | A random generator for colours
 genColour :: Gen Colour
