@@ -115,6 +115,7 @@ prop_Shape = error "A4 prop_Shape undefined"
 
 -- * Test data generators
 
+-- test
 -- ** A5
 -- | A random generator for colours
 genColour :: Gen Colour
