@@ -121,16 +121,18 @@ otherwise = False
 -- test tror den här blir svår
 -- ** A5
 -- | A random generator for colours
+
 genColour :: Gen Colour
 genColour = elements [Black, Red, Green, Yellow, Blue, Purple, Cyan, Grey]
 
 instance Arbitrary Colour where
   arbitrary = genColour
 
+
 -- ** A6
 -- | A random generator for shapes
 genShape :: Gen Shape
-genShape = error "A6 genShape undefined"
+genShape = elements allShapes
 
 instance Arbitrary Shape where
   arbitrary = genShape
