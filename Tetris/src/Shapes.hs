@@ -107,11 +107,12 @@ join (S (x:xs)) = concat (x:xs)
 
 -- * The Shape invariant
 
--- ** A4
+--  A4
 -- | Shape invariant (shapes have at least one row, at least one column,
 -- and are rectangular)
 prop_Shape :: Shape -> Bool
-prop_Shape = error "A4 prop_Shape undefined"
+prop_Shape (S (x:xs)) = shapeSize (S (x:xs)) >= (1, 1)
+otherwise = False
 
 -- * Test data generators
 
