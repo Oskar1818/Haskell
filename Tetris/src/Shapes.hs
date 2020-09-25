@@ -85,7 +85,6 @@ emptyRow :: Int -> Row
 emptyRow r = replicate r Nothing
 
 
-
 -- ** A2
 
 -- | The size (width and height) of a shape
@@ -147,14 +146,31 @@ rotateShape (S (xs)) = (S (transpose(reverse xs)))
 
 -- ** A8
 -- | shiftShape adds empty squares above and to the left of the shape
+-- i är antal steg nedåt.
+-- j är antal steg åt höger
 shiftShape :: (Int, Int) -> Shape -> Shape
-shiftShape = error "A8 shiftShape undefined"
+shiftShape (i, j)  (S (xs)) = S (shiftDown (i, j) (S (shiftRight (i, j) (S (xs)))) ++ shiftRight (i, j) (S (xs)))
+
+shiftRight :: (w, Int) -> Shape -> [Row]
+shiftRight (_, j) (S (xs)) = [(emptyRow j ++ x) | x <- xs]
+
+shiftDown :: (Int, w) -> Shape -> [Row]
+shiftDown (i, _) (S (xs)) = emp
+  where (S emp) = emptyShape (i, (shapeWidth (S (xs))))
+
+
+shapeWidth :: Shape -> Int
+shapeWidth (S (x:xs)) = length(x)
+
+
+
 
 -- ** A9
 -- | padShape adds empty sqaure below and to the right of the shape
 padShape :: (Int, Int) -> Shape -> Shape
 padShape = error "A9 padShape undefined"
 
+-- [x + emptyRow n | x <- xs]
 -- ** A10
 -- | pad a shape to a given size
 padShapeTo :: (Int, Int) -> Shape -> Shape
