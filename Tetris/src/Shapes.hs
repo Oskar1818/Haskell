@@ -8,8 +8,6 @@ import Test.QuickCheck
 
 -- * Shapes
 
---testtest
-
 type Square = Maybe Colour
 
 data Colour = Black | Red | Green | Yellow | Blue | Purple | Cyan | Grey
@@ -141,40 +139,44 @@ instance Arbitrary Shape where
 -- ** A7
 -- | Rotate a shape 90 degrees
 rotateShape :: Shape -> Shape
-rotateShape (S (xs)) = (S (transpose(reverse xs)))
-
+--rotateShape = S . transpose . reverse
+rotateShape (S xs) = (S (transpose(reverse xs)))
+-- rotateShape S xs = S . transpose . reverse xs
 
 -- ** A8
 -- | shiftShape adds empty squares above and to the left of the shape
--- i är antal steg nedåt.
--- j är antal steg åt höger
+-- i steps, down and j steps to the right
 shiftShape :: (Int, Int) -> Shape -> Shape
-shiftShape (i, j)  (S (xs)) = S (shiftDown (i, j) (S (shiftRight (i, j) (S (xs)))) ++ shiftRight (i, j) (S (xs)))
+shiftShape (i, j)  shape = S (shiftDown (i, j) (S (shiftRight (i, j) shape)) ++ shiftRight (i, j) shape)
 
 shiftRight :: (w, Int) -> Shape -> [Row]
-shiftRight (_, j) (S (xs)) = [(emptyRow j ++ x) | x <- xs]
+shiftRight (_, j) (S xs) = [(emptyRow j ++ x) | x <- xs]
 
 shiftDown :: (Int, w) -> Shape -> [Row]
-shiftDown (i, _) (S (xs)) = emp
-  where (S emp) = emptyShape (i, (shapeWidth (S (xs))))
-
+shiftDown (i, _) (S xs) = emp
+  where (S emp) = emptyShape (i, shapeWidth (S xs))
 
 shapeWidth :: Shape -> Int
-shapeWidth (S (x:xs)) = length(x)
-
-
+shapeWidth = length . head . rows
+-- shapeWidth s = length (head (rows s))
+--shapeWidth (S (x:xs)) = length(x)
 
 
 -- ** A9
 -- | padShape adds empty sqaure below and to the right of the shape
 padShape :: (Int, Int) -> Shape -> Shape
-padShape = error "A9 padShape undefined"
+padShape (i, j) s = doubleRotate (shiftShape (i, j) (doubleRotate s))
 
--- [x + emptyRow n | x <- xs]
+doubleRotate :: Shape -> Shape
+doubleRotate s = rotateShape (rotateShape s)
+
+
 -- ** A10
 -- | pad a shape to a given size
 padShapeTo :: (Int, Int) -> Shape -> Shape
-padShapeTo = error "A10 padShapeTo undefined"
+padShapeTo (i, j) shape = shiftShape (i - c, j - r) shape
+  where (c, r) = shapeSize shape
+
 
 -- * Comparing and combining shapes
 
