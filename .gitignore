@@ -1,0 +1,4 @@
+Tetris/*
+!Tetris/src
+Tetris/src/*
+!Tetris/src/Shapes.hs
