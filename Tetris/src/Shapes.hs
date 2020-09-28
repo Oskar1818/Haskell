@@ -191,7 +191,12 @@ padShapeTo (i, j) shape = shiftShape (i - c, j - r) shape
 -- ** B1
 -- | Test if two shapes overlap
 overlaps :: Shape -> Shape -> Bool
-s1 `overlaps` s2 = error "A11 overlaps undefined"
+s1 `overlaps` s2 =
+
+rowsOverlap :: Row -> Row -> Bool
+
+
+rowsOverlap :: Row -> Row -> Bool
 
 -- ** B2
 -- | zipShapeWith, like 'zipWith' for lists
