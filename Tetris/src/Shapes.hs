@@ -190,24 +190,34 @@ padShapeTo (i, j) shape = shiftShape (i - c, j - r) shape
 
 -- ** B1
 -- | Test if two shapes overlap
---overlaps :: Shape -> Shape -> Bool
---overlaps (S xs) (S ys) = or [rowsOverlap x y| x <- xs, y <- ys]
+overlaps :: Shape -> Shape -> Bool
+overlaps (S xs) (S ys) = or [rowsOverlap x y| x <- xs, y <- ys]
+  --overlaps :: Shape -> Shape -> Bool
+  --overlaps (S sh1) (S sh2) = or $ zipWith rowsOverlap sh1 sh2
 
 rowsOverlap :: Row -> Row -> Bool
 rowsOverlap xs ys = or [(x /= Nothing) && (y /= Nothing) | x <- xs, y <- ys]
-
-overlaps :: Shape -> Shape -> Bool
-overlaps (S sh1) (S sh2) = or $ zipWith rowsOverlap sh1 sh2
-
-
-
-
 
 
 -- ** B2
 -- | zipShapeWith, like 'zipWith' for lists
 zipShapeWith :: (Square->Square->Square) -> Shape -> Shape -> Shape
-zipShapeWith = error "A12 zipShapeWith undefined"
+zipShapeWith = zipShape . zipShape
+
+zipShape :: (a -> b -> c) -> [a] -> [b] -> [c]
+zipShape f xs ys = map (\(x,y) -> f x y) . zip xs $ ys
+
+blackClashes :: Shape -> Shape -> Shape
+blackClashes s1 s2 = zipShapeWith clash s1 s2
+ where
+  clash :: Square -> Square -> Square
+  clash Nothing Nothing = Nothing
+  clash Nothing s       = s
+  clash s       Nothing = s
+  clash (Just c1) (Just c2) = Just Black
+
+
+
 
 -- ** B3
 -- | Combine two shapes. The two shapes should not overlap.
