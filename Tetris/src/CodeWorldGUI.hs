@@ -1,3 +1,4 @@
+-- test
 -- | Run a game using the the "CodeWorld" API.
 -- Open the game in your web browser.
 module CodeWorldGUI(module GameInterface,runGame) where
@@ -28,7 +29,7 @@ runGame g =
         delay = fromIntegral (tickDelay g state book)/1000
     time dt (t0,st) = (t0+dt,st)
 
-    
+
     event e w@(t,(Right state,book)) =
         case readAction e of
           Just a -> (t,stepGame' a state book)
@@ -46,11 +47,11 @@ readAction e =
       case unpack txt of
         " "     -> Just MoveDown
         "Left"  -> Just MoveLeft
-        "Right" -> Just MoveRight 
+        "Right" -> Just MoveRight
         "Up"    -> Just Rotate
         "Down"  -> Just MoveDown
         "J"     -> Just MoveLeft
-        "L"     -> Just MoveRight 
+        "L"     -> Just MoveRight
         "K"     -> Just Rotate
 --      "P"     -> Just Pause
 --      "Q"     -> Just Quit
