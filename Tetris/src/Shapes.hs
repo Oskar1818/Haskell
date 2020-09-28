@@ -201,12 +201,25 @@ rowsOverlap xs ys = or [(x /= Nothing) && (y /= Nothing) | x <- xs, y <- ys]
 
 -- ** B2
 -- | zipShapeWith, like 'zipWith' for lists
+{-
+zipShapeWith :: (Square->Square->Square) -> Shape -> Shape -> Shape
+zipShapeWith = zipShape . zipShape'
+
+zipShape :: (a -> b -> c) -> [a] -> [b] -> [c]
+zipShape f xs ys = S . map (\(x,y) -> f x y) . zip xs $ ys
+
+zipShape' :: (a -> b -> c) -> [a] -> [b] -> [c]
+zipShape' f xs ys = map (\(x,y) -> f x y) . zip xs $ ys
+-}
 zipShapeWith :: (Square->Square->Square) -> Shape -> Shape -> Shape
 zipShapeWith = zipShape . zipShape
 
 zipShape :: (a -> b -> c) -> [a] -> [b] -> [c]
 zipShape f xs ys = map (\(x,y) -> f x y) . zip xs $ ys
 
+--map (S . xs) [list]
+
+{-
 blackClashes :: Shape -> Shape -> Shape
 blackClashes s1 s2 = zipShapeWith clash s1 s2
  where
@@ -215,7 +228,7 @@ blackClashes s1 s2 = zipShapeWith clash s1 s2
   clash Nothing s       = s
   clash s       Nothing = s
   clash (Just c1) (Just c2) = Just Black
-
+-}
 
 
 
