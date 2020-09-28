@@ -203,6 +203,7 @@ overlaps (S sh1) (S sh2) = or $ zipWith rowsOverlap sh1 sh2
 
 
 
+
 -- ** B2
 -- | zipShapeWith, like 'zipWith' for lists
 zipShapeWith :: (Square->Square->Square) -> Shape -> Shape -> Shape
