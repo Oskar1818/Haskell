@@ -29,12 +29,12 @@ version :: Version
 version = Version [0,1,0,0] []
 bindir, libdir, dynlibdir, datadir, libexecdir, sysconfdir :: FilePath
 
-bindir     = "C:\\Users\\Clara Josefsson\\Documents\\GitHub\\Labs-Haskell\\Tetris\\.stack-work\\install\\10241736\\bin"
-libdir     = "C:\\Users\\Clara Josefsson\\Documents\\GitHub\\Labs-Haskell\\Tetris\\.stack-work\\install\\10241736\\lib\\x86_64-windows-ghc-8.6.5\\tetris-0.1.0.0-FmxaQcsD7i22dfZvwjKdCH"
-dynlibdir  = "C:\\Users\\Clara Josefsson\\Documents\\GitHub\\Labs-Haskell\\Tetris\\.stack-work\\install\\10241736\\lib\\x86_64-windows-ghc-8.6.5"
-datadir    = "C:\\Users\\Clara Josefsson\\Documents\\GitHub\\Labs-Haskell\\Tetris\\.stack-work\\install\\10241736\\share\\x86_64-windows-ghc-8.6.5\\tetris-0.1.0.0"
-libexecdir = "C:\\Users\\Clara Josefsson\\Documents\\GitHub\\Labs-Haskell\\Tetris\\.stack-work\\install\\10241736\\libexec\\x86_64-windows-ghc-8.6.5\\tetris-0.1.0.0"
-sysconfdir = "C:\\Users\\Clara Josefsson\\Documents\\GitHub\\Labs-Haskell\\Tetris\\.stack-work\\install\\10241736\\etc"
+bindir     = "C:\\Users\\Oskar\\Documents\\Github\\Labs-Haskell\\Tetris\\.stack-work\\install\\e53fa9a1\\bin"
+libdir     = "C:\\Users\\Oskar\\Documents\\Github\\Labs-Haskell\\Tetris\\.stack-work\\install\\e53fa9a1\\lib\\x86_64-windows-ghc-8.6.5\\tetris-0.1.0.0-FmxaQcsD7i22dfZvwjKdCH"
+dynlibdir  = "C:\\Users\\Oskar\\Documents\\Github\\Labs-Haskell\\Tetris\\.stack-work\\install\\e53fa9a1\\lib\\x86_64-windows-ghc-8.6.5"
+datadir    = "C:\\Users\\Oskar\\Documents\\Github\\Labs-Haskell\\Tetris\\.stack-work\\install\\e53fa9a1\\share\\x86_64-windows-ghc-8.6.5\\tetris-0.1.0.0"
+libexecdir = "C:\\Users\\Oskar\\Documents\\Github\\Labs-Haskell\\Tetris\\.stack-work\\install\\e53fa9a1\\libexec\\x86_64-windows-ghc-8.6.5\\tetris-0.1.0.0"
+sysconfdir = "C:\\Users\\Oskar\\Documents\\Github\\Labs-Haskell\\Tetris\\.stack-work\\install\\e53fa9a1\\etc"
 
 getBinDir, getLibDir, getDynLibDir, getDataDir, getLibexecDir, getSysconfDir :: IO FilePath
 getBinDir = catchIO (getEnv "tetris_bindir") (\_ -> return bindir)

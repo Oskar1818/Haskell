@@ -190,13 +190,18 @@ padShapeTo (i, j) shape = shiftShape (i - c, j - r) shape
 
 -- ** B1
 -- | Test if two shapes overlap
+--overlaps :: Shape -> Shape -> Bool
+--overlaps (S xs) (S ys) = or [rowsOverlap x y| x <- xs, y <- ys]
+
+rowsOverlap :: Row -> Row -> Bool
+rowsOverlap xs ys = or [(x /= Nothing) && (y /= Nothing) | x <- xs, y <- ys]
+
 overlaps :: Shape -> Shape -> Bool
-s1 `overlaps` s2 =
-
-rowsOverlap :: Row -> Row -> Bool
+overlaps (S sh1) (S sh2) = or $ zipWith rowsOverlap sh1 sh2
 
 
-rowsOverlap :: Row -> Row -> Bool
+
+
 
 -- ** B2
 -- | zipShapeWith, like 'zipWith' for lists
