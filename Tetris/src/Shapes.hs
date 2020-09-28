@@ -196,6 +196,8 @@ s1 `overlaps` s2 =
 rowsOverlap :: Row -> Row -> Bool
 
 
+rowsOverlap :: Row -> Row -> Bool
+
 -- ** B2
 -- | zipShapeWith, like 'zipWith' for lists
 zipShapeWith :: (Square->Square->Square) -> Shape -> Shape -> Shape
