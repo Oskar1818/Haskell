@@ -195,6 +195,7 @@ s1 `overlaps` s2 = error "A11 overlaps undefined"
 
 rowsOverlap :: Row -> Row -> Bool
 
+
 -- ** B2
 -- | zipShapeWith, like 'zipWith' for lists
 zipShapeWith :: (Square->Square->Square) -> Shape -> Shape -> Shape
