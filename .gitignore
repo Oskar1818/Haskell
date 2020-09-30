@@ -2,3 +2,6 @@ Tetris/*
 !Tetris/src
 Tetris/src/*
 !Tetris/src/Shapes.hs
+!Tetris/app
+Tetris/app/*
+!Tetris/app/Tetris.hs
