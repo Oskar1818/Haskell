@@ -189,8 +189,8 @@ rowsOverlap xs ys = or [(x /= Nothing) && (y /= Nothing) | x <- xs, y <- ys]
 -- (.) :: (b -> c) -> (a -> b) -> (a -> c)
 -- :: ((a -> b -> c) -> [a] -> [b] -> [c]) -> ((a -> b -> c) -> [a] -> [b] -> [c]) -> ?
 
-zipShape :: (a -> b -> c) -> [a] -> [b] -> [c]
-zipShape f xs ys = S . map (\(x,y) -> f x y) . zip xs $ ys
+--zipShape :: (a -> b -> c) -> [a] -> [b] -> [c]
+--zipShape f xs ys = S . map (\(x,y) -> f x y) . zip xs $ ys
 
 {- f :: a -> b
 
@@ -213,11 +213,11 @@ blackClashes s1 s2 = zipShapeWith clash s1 s2
 f == (\x -> f x) -}
 
 zipShapeWith :: (Square->Square->Square) -> Shape -> Shape -> Shape
-zipShapeWith f (S s1) (S s2) = S $ zipWith (zipWith f) s1 s2 --zipShape . zipShape'
+zipShapeWith f (S s1) (S s2) = S $ zipWith (zipWith f) s1 s2
 
-  {- where
-    zipRows :: (Square -> Square -> Square) -> Row -> Row -> Row
-    zipRows f row1 row2 = zipWith f row1 row2 -}
+{- where
+  zipRows :: (Square -> Square -> Square) -> Row -> Row -> Row
+  zipRows f row1 row2 = zipWith f row1 row2 -}
 
 {-
 zipShape :: (a -> b -> c) -> [a] -> [b] -> [c]
