@@ -1,3 +1,6 @@
+-- Lab 3, Tetris
+-- Authors: Clara Josefsson, Oskar Sturebrand, Valter Miari
+-- Lab group: 59
 
 -- | Types and functions for shapes. The list of all tetris pieces.
 
