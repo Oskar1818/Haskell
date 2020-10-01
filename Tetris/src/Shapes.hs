@@ -81,10 +81,10 @@ allShapes = [S (makeSquares s) | s <- shapes]
 
 -- ** A1
 emptyShape :: (Int, Int) -> Shape
-emptyShape (r, s) =  S (replicate r (emptyRow s))
+emptyShape (x', y) =  S (replicate y (emptyRow x'))
 
 emptyRow :: Int -> Row
-emptyRow r = replicate r Nothing
+emptyRow x' = replicate x' Nothing
 
 
 -- ** A2
@@ -140,40 +140,41 @@ instance Arbitrary Shape where
 -- ** A7
 -- | Rotate a shape 90 degrees
 rotateShape :: Shape -> Shape
-rotateShape (S (xs)) = (S (transpose(reverse xs)))
+rotateShape (S xs) = (S (transpose(reverse xs)))
 
 
 -- ** A8
 -- | shiftShape adds empty squares above and to the left of the shape
--- i är antal steg nedåt.
--- j är antal steg åt höger
--- fel håll
+-- x' är antal steg åt höger
+-- y är antal steg åt nedåt
 shiftShape :: (Int, Int) -> Shape -> Shape
-shiftShape (j, i)  (S (xs)) = S (shiftDown (j, i) (S (shiftRight (j, i) (S (xs)))) ++ shiftRight (j, i) (S (xs)))
+shiftShape (x', y)  s1 = S (shiftDown (x', y) (S (shiftRight (x', y) s1)) ++ shiftRight (x', y) s1)
 
-shiftRight :: (w, Int) -> Shape -> [Row]
-shiftRight (_, j) (S (xs)) = [(emptyRow j ++ x) | x <- xs]
+shiftRight :: (Int, w) -> Shape -> [Row]
+shiftRight (x', _) (S xs) = [(emptyRow x' ++ x) | x <- xs]
 
-shiftDown :: (Int, w) -> Shape -> [Row]
-shiftDown (i,_) (S (xs)) = emp
-  where (S emp) = emptyShape (i, (shapeWidth (S (xs))))
+shiftDown :: (w, Int) -> Shape -> [Row]
+shiftDown (_, y) (S xs) = emp
+  where (S emp) = emptyShape (shapeWidth (S xs), y)
 
 shapeWidth :: Shape -> Int
 shapeWidth (S (x:xs)) = length(x)
 
 -- ** A9
 -- | padShape adds empty sqaure below and to the right of the shape
+-- | x' steps to the left
+-- | y steps uppwords
 padShape :: (Int, Int) -> Shape -> Shape
-padShape (i, j) s = doubleRotate (shiftShape (i, j) (doubleRotate s))
+padShape (x', y) s1 = doubleRotate (shiftShape (x', y) (doubleRotate s1))
 
 doubleRotate :: Shape -> Shape
-doubleRotate s = rotateShape (rotateShape s)
+doubleRotate s1 = rotateShape (rotateShape s1)
 
 -- ** A10
 -- | pad a shape to a given size
 padShapeTo :: (Int, Int) -> Shape -> Shape
-padShapeTo (i, j) shape = padShape (i - r, j - c) shape
-  where (c, r) = shapeSize shape
+padShapeTo (x', y) s1 = padShape (x' - c, y - r) s1
+  where (c, r) = shapeSize s1
 
 -- * Comparing and combining shapes
 
