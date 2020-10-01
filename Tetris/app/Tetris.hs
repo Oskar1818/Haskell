@@ -38,8 +38,9 @@ wellWidth  = 10
 wellHeight = 20
 
 -- | Starting position for falling pieces
+-- | ändra ordning såsmåningom
 startPosition :: Vector
-startPosition = (wellWidth `div` 2 - 1, 0)
+startPosition = (0, wellWidth `div` 2 - 1)
 
 -- | Vector addition
 vAdd :: Vector -> Vector -> Vector
@@ -65,12 +66,15 @@ addWalls (S xs) = S $ addBlackRow (S xs) ++ map (addBlack) xs ++ addBlackRow (S 
    where
      (columns, rows) = shapeSize (S (map (addBlack) xs))
      blackRow        = replicate columns (Just Black)
-      
+
 
 -- | Visualize the current game state. This is what the user will see
 -- when playing the game.
 drawTetris :: Tetris -> Shape
-drawTetris (Tetris (v, p) w _) = w -- incomplete !!!
+drawTetris (Tetris (v, p) w _) = addWalls (combine (shiftShape v p) (rotateShape w))
+
+move :: Vector -> Tetris -> Tetris
+move 
 
 -- | The initial game state
 startTetris :: [Double] -> Tetris

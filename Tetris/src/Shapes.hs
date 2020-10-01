@@ -147,8 +147,9 @@ rotateShape (S (xs)) = (S (transpose(reverse xs)))
 -- | shiftShape adds empty squares above and to the left of the shape
 -- i är antal steg nedåt.
 -- j är antal steg åt höger
+-- fel håll
 shiftShape :: (Int, Int) -> Shape -> Shape
-shiftShape (i, j)  (S (xs)) = S (shiftDown (i, j) (S (shiftRight (i, j) (S (xs)))) ++ shiftRight (i, j) (S (xs)))
+shiftShape (j, i)  (S (xs)) = S (shiftDown (j, i) (S (shiftRight (j, i) (S (xs)))) ++ shiftRight (j, i) (S (xs)))
 
 shiftRight :: (w, Int) -> Shape -> [Row]
 shiftRight (_, j) (S (xs)) = [(emptyRow j ++ x) | x <- xs]
