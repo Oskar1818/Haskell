@@ -55,27 +55,17 @@ prop_Tetris (Tetris (_, s) _ _) = prop_Shape s && wellSize == (10,20)
 
 -- | Add black walls around a shape
 addWalls :: Shape -> Shape
-addWalls (S xs) = S $ [addBlackRow (S xs)] ++ map (addBlack) xs ++ [addBlackRow (S xs)]
+addWalls (S xs) = S $ addBlackRow (S xs) ++ map (addBlack) xs ++ addBlackRow (S xs)
  where
   addBlack :: Row -> Row
-  addBlack [Nothing, Nothing] = [Just Black, Nothing, Nothing, Just Black]
-  addBlack [Nothing, s      ] = [Just Black, Nothing, s, Just Black]
-  addBlack [s,       Nothing] = [Just Black, s, Nothing, Just Black]
-  addBlack [s1,      s2     ] = [Just Black, s1, s2, Just Black]
+  addBlack xs = Just Black : xs ++ [Just Black]
 
-  addBlackRow :: Shape -> Row
-  addBlackRow (S xs) = take (fst(shapeSize (S (map (addBlack) xs)))) c
+  addBlackRow :: Shape -> [Row]
+  addBlackRow (S xs) = ([blackRow])
    where
-     c = [Just Black, Just Black,Just Black,Just Black,Just Black,
-          Just Black,Just Black,Just Black,Just Black,Just Black,
-          Just Black,Just Black,Just Black,Just Black,Just Black,
-          Just Black,Just Black,Just Black,Just Black,Just Black]
-
-  {- }[x | x <- [Just Black]]
- where
-    c = length(x) -}
-
-
+     (columns, rows) = shapeSize (S (map (addBlack) xs))
+     blackRow        = replicate columns (Just Black)
+      
 
 -- | Visualize the current game state. This is what the user will see
 -- when playing the game.
