@@ -1,7 +1,7 @@
 -- | The Tetris game (main module)
 module Main where
 
-import ConsoleGUI       -- cabal install ansi-terminal 
+import ConsoleGUI       -- cabal install ansi-terminal
 --import CodeWorldGUI     -- cabal install codeworld-api
 import Shapes
 
@@ -51,11 +51,31 @@ place (v, s) = shiftShape v s
 
 -- | An invariant that startTetris and stepTetris should uphold
 prop_Tetris :: Tetris -> Bool
-prop_Tetris t = True -- incomplete !!!
+prop_Tetris (Tetris (_, s) _ _) = prop_Shape s && wellSize == (10,20)
 
 -- | Add black walls around a shape
 addWalls :: Shape -> Shape
-addWalls s = s -- incomplete !!!
+addWalls (S xs) = S $ [addBlackRow (S xs)] ++ map (addBlack) xs ++ [addBlackRow (S xs)]
+ where
+  addBlack :: Row -> Row
+  addBlack [Nothing, Nothing] = [Just Black, Nothing, Nothing, Just Black]
+  addBlack [Nothing, s      ] = [Just Black, Nothing, s, Just Black]
+  addBlack [s,       Nothing] = [Just Black, s, Nothing, Just Black]
+  addBlack [s1,      s2     ] = [Just Black, s1, s2, Just Black]
+
+  addBlackRow :: Shape -> Row
+  addBlackRow (S xs) = take (fst(shapeSize (S (map (addBlack) xs)))) c
+   where
+     c = [Just Black, Just Black,Just Black,Just Black,Just Black,
+          Just Black,Just Black,Just Black,Just Black,Just Black,
+          Just Black,Just Black,Just Black,Just Black,Just Black,
+          Just Black,Just Black,Just Black,Just Black,Just Black]
+
+  {- }[x | x <- [Just Black]]
+ where
+    c = length(x) -}
+
+
 
 -- | Visualize the current game state. This is what the user will see
 -- when playing the game.
