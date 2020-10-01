@@ -74,7 +74,7 @@ drawTetris :: Tetris -> Shape
 drawTetris (Tetris (v, p) w _) = addWalls (combine (shiftShape v p) (rotateShape w))
 
 move :: Vector -> Tetris -> Tetris
-move 
+move v1 (Tetris (v2, s) w d) = (Tetris ((v1 `vAdd` v2), s) w d)
 
 -- | The initial game state
 startTetris :: [Double] -> Tetris
