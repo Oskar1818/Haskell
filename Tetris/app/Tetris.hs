@@ -71,7 +71,7 @@ addWalls (S xs) = S $ addBlackRow (S xs) ++ map (addBlack) xs ++ addBlackRow (S 
 -- | Visualize the current game state. This is what the user will see
 -- when playing the game.
 drawTetris :: Tetris -> Shape
-drawTetris (Tetris (v, s) w _) = addWalls (combine (shiftShape v s) (rotateShape w))
+drawTetris (Tetris (v, s) w _) = addWalls (combine (shiftShape v s) w)
 
 move :: Vector -> Tetris -> Tetris
 move v1 (Tetris (v2, s) w d) = (Tetris ((v1 `vAdd` v2), s) w d)
@@ -82,7 +82,13 @@ startTetris rs = Tetris (startPosition, shape1) (emptyShape wellSize) supply
   where
     shape1:supply = repeat (allShapes !! 1) -- incomplete !!!
 
+tick :: Tetris -> Maybe (Int, Tetris)
+tick t@(Tetris (v, p) w sup) = Just (0, t')
+  where t' = move (0, 1) t
+
 -- | React to input. The function returns 'Nothing' when it's game over,
 -- and @'Just' (n,t)@, when the game continues in a new state @t@.
 stepTetris :: Action -> Tetris -> Maybe (Int, Tetris)
+stepTetris Tick t = tick t
+stepTetris MoveLeft t = undefined
 stepTetris _ t = Just (0,t) -- incomplete !!!

@@ -269,10 +269,11 @@ f' :: Square -> Square -> Square
 f' Nothing Nothing = Nothing
 f' Nothing s       = s
 f' s       Nothing = s
+-- f' s1      s2      = Nothing
 
 
 convert :: Shape -> Shape -> (Int, Int)
-convert (S s1) (S s2) = (max y b, max x a)
+convert (S s1) (S s2) = (max x a, max y b)
  where
   (x, y) = shapeSize (S s1)
   (a, b) = shapeSize (S s2)
