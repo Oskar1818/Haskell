@@ -108,11 +108,12 @@ join (S (x:xs)) = concat (x:xs)
 -- | divides the sum of all row lenghts with lenght of a single row, and
 -- then check if the average row is the same as the single row.
 prop_Shape :: Shape -> Bool
-prop_Shape (S xs) = rowL == avgL && columns
- where
-   columns = shapeSize (S xs) >= (1, 1)
-   rowL = map length xs
-   avgL = div (sum rowL) (length rowL)
+prop_Shape (S xs)
+                | shapeSize (S xs) <= (0, 0) = False
+                | otherwise = avgL == c
+                  where
+                    c:cs = map length xs
+                    avgL = div (sum (c:cs)) (length xs)
 
 -- * Test data generators
 
@@ -148,7 +149,7 @@ rotateShape (S xs) = (S (transpose(reverse xs)))
 -- x' = number of steps right
 -- y = number of steps down
 shiftShape :: (Int, Int) -> Shape -> Shape
-shiftShape (x', y)  s1 = S (shiftDown (x', y) (S (shiftRight (x', y) s1)) ++ shiftRight (x', y) s1)
+shiftShape (x', y)  s1 = S (shiftDown y (S (shiftRight x' s1)) ++ shiftRight x' s1)
 
 -- Adds empty squares to the left of a shape
 shiftRight :: Int -> Shape -> [Row]

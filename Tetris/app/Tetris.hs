@@ -1,3 +1,7 @@
+-- Lab 3, Tetris
+-- Authors: Clara Josefsson, Oskar Sturebrand, Valter Miari
+-- Lab group: 59
+
 -- | The Tetris game (main module)
 module Main where
 
@@ -38,7 +42,6 @@ wellWidth  = 10
 wellHeight = 20
 
 -- | Starting position for falling pieces
--- | ändra ordning såsmåningom
 startPosition :: Vector
 startPosition = (wellWidth `div` 2 - 1, 0)
 
