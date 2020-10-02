@@ -58,6 +58,8 @@ prop_Tetris :: Tetris -> Bool
 prop_Tetris (Tetris (_, s) _ _) = prop_Shape s && wellSize == (10,20)
 
 -- | Add black walls around a shape
+-- | addBlackRow checks the size of the mapped black-shape uses the replicate
+-- function to add the right amount of Just Black:s
 addWalls :: Shape -> Shape
 addWalls (S xs) = S $ addBlackRow (S xs) ++ map (addBlack) xs ++ addBlackRow (S xs)
  where
@@ -85,6 +87,8 @@ startTetris rs = Tetris (startPosition, shape1) (emptyShape wellSize) supply
   where
     shape1:supply = repeat (allShapes !! 1) -- incomplete !!!
 
+-- returns the new state of the game, where the new tetris-state is modified
+-- by the move-function.
 tick :: Tetris -> Maybe (Int, Tetris)
 tick t@(Tetris (v, p) w sup) = Just (0, t')
   where t' = move (0, 1) t
