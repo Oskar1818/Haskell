@@ -90,7 +90,7 @@ startTetris rs = Tetris (startPosition, shape1) (emptyShape wellSize) supply
 -- returns the new state of the game, where the new tetris-state is modified
 -- by the move-function.
 tick :: Tetris -> Maybe (Int, Tetris)
-tick t@(Tetris (v, p) w sup) = Just (0, t')
+tick t@(Tetris (v, s) w sup) = Just (0, t')
   where t' = move (0, 1) t
 
 -- | React to input. The function returns 'Nothing' when it's game over,
@@ -99,3 +99,11 @@ stepTetris :: Action -> Tetris -> Maybe (Int, Tetris)
 stepTetris Tick t = tick t
 stepTetris MoveLeft t = undefined
 stepTetris _ t = Just (0,t) -- incomplete !!!
+
+collision :: Tetris -> Bool
+collision (Tetris ((v1, v2), s) w _)
+  | v1 < 0                              = True
+  | v1 + fst (shapeSize s) > wellWidth  = True
+  | v2 + snd (shapeSize s) > wellHeight = True
+  | s `overlaps` w                      = True
+  | otherwise                           = False
