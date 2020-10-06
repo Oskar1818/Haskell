@@ -90,20 +90,32 @@ startTetris rs = Tetris (startPosition, shape1) (emptyShape wellSize) supply
 -- returns the new state of the game, where the new tetris-state is modified
 -- by the move-function.
 tick :: Tetris -> Maybe (Int, Tetris)
-tick t@(Tetris (v, s) w sup) = Just (0, t')
-  where t' = move (0, 1) t
+tick t@(Tetris (v, s) w sup) =
+                             if (collision t == True)
+                              then Just (0, t)
+                              else Just (0, move (0, 1) t )
 
 -- | React to input. The function returns 'Nothing' when it's game over,
 -- and @'Just' (n,t)@, when the game continues in a new state @t@.
 stepTetris :: Action -> Tetris -> Maybe (Int, Tetris)
 stepTetris Tick t = tick t
-stepTetris MoveLeft t = undefined
+stepTetris MoveLeft t = tick $ movePiece (-1) t
+stepTetris MoveRight t = tick $ movePiece 1 t
+stepTetris MoveDown t = tick t
+stepTetris Rotate t = undefined
 stepTetris _ t = Just (0,t) -- incomplete !!!
+
 
 collision :: Tetris -> Bool
 collision (Tetris ((v1, v2), s) w _)
-  | v1 < 0                              = True
-  | v1 + fst (shapeSize s) > wellWidth  = True
-  | v2 + snd (shapeSize s) > wellHeight = True
-  | s `overlaps` w                      = True
-  | otherwise                           = False
+  | v1 <= 0                              = True
+  | v1 + fst (shapeSize s) >= wellWidth  = True
+  | v2 + snd (shapeSize s) >= wellHeight = True
+  | place ((v1, v2), s) `overlaps` w     = True
+  | otherwise                            = False
+
+movePiece :: Int -> Tetris -> Tetris
+movePiece i t@(Tetris ((v1, v2), s) w sup) = move (i, v2) t -- doesn't check collide, probably not neccessary.
+
+rotate :: Tetris -> Tetris
+rotate (Tetris ((v1, v2), s) w sup) = (Tetris ((v1, v2), (rotateShape s)) w sup)
