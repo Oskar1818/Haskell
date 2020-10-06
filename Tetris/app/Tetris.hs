@@ -102,7 +102,7 @@ stepTetris Tick t = tick t
 stepTetris MoveLeft t = tick $ movePiece (-1) t
 stepTetris MoveRight t = tick $ movePiece 1 t
 stepTetris MoveDown t = tick t
-stepTetris Rotate t = undefined
+stepTetris Rotate t = tick $ rotatePiece t
 stepTetris _ t = Just (0,t) -- incomplete !!!
 
 
@@ -117,5 +117,10 @@ collision (Tetris ((v1, v2), s) w _)
 movePiece :: Int -> Tetris -> Tetris
 movePiece i t@(Tetris ((v1, v2), s) w sup) = move (i, v2) t -- doesn't check collide, probably not neccessary.
 
-rotate :: Tetris -> Tetris
-rotate (Tetris ((v1, v2), s) w sup) = (Tetris ((v1, v2), (rotateShape s)) w sup)
+rotatePiece :: Tetris -> Tetris
+rotatePiece (Tetris ((v1, v2), s) w sup) = (Tetris ((v1, v2), (rotateShape s)) w sup)
+
+{- rotatePiece :: Tetris -> Tetris
+rotatePiece t
+            | collision (rotate t) = rotate t
+            | otherwise            = t -}
