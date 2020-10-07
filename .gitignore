@@ -1,21 +1,17 @@
-Labs-Haskell/*
-
-!Labs-Haskells/Blackjack
-!Labs-Haskell/Power the people
-
-!Labs-Haskell/Tetris
-Labs-Haskell/Tetris/*
-
-!Labs-Haskell/Tetris/app
-Labs-Haskell/Tetris/app/*
-!Labs-Haskell/Tetris/app/Tetris.hs
-
-!Labs-Haskell/Tetris/src
-Labs-Haskell/Tetris/src/*
-!Labs-Haskell/Tetris/src/Shapes.hs
-
-
-
-
+/*
 !.gitignore
-!README.md
+
+!/Blackjack
+
+!/Power the people
+
+!/Tetris
+/Tetris/*
+
+!/Tetris/app
+/Tetris/app/*
+!/Tetris/app/Tetris.hs
+
+!/src
+/src/*
+!/src/Shapes.hs
