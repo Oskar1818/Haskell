@@ -1,5 +1,8 @@
 /*
 !.gitignore
+!README.md
+.git
+
 
 !/Blackjack
 
@@ -12,6 +15,10 @@
 /Tetris/app/*
 !/Tetris/app/Tetris.hs
 
+
 !/Tetris/src
 /Tetris/src/*
 !/Tetris/src/Shapes.hs
+!/Tetris/src/GameInterface.hs
+!/Tetris/src/ConsoleGUI.hs
+!/Tetris/src/CodeWorldGUI.hs
