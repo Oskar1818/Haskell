@@ -1,4 +1,3 @@
---test
 -- Lab 3, Tetris
 -- Authors: Clara Josefsson, Oskar Sturebrand, Valter Miari
 -- Lab group: 59
@@ -93,7 +92,7 @@ startTetris rs = Tetris (startPosition, shape1) (emptyShape wellSize) supply
 tick :: Tetris -> Maybe (Int, Tetris)
 tick t@(Tetris (v, s) w sup) =
                              if (collision t == True)
-                              then Just (0, t)
+                              then dropNewPiece t
                               else Just (0, move (0, 1) t )
 
 -- | React to input. The function returns 'Nothing' when it's game over,
@@ -109,19 +108,30 @@ stepTetris _ t = Just (0,t) -- incomplete !!!
 
 collision :: Tetris -> Bool
 collision (Tetris ((v1, v2), s) w _)
-  | v1 <= 0                              = True
-  | v1 + fst (shapeSize s) >= wellWidth  = True
-  | v2 + snd (shapeSize s) >= wellHeight = True
   | place ((v1, v2), s) `overlaps` w     = True
+  | v1 + fst (shapeSize s) > wellWidth   = True
+  | v2 + snd (shapeSize s) >= wellHeight = True
+  | v1 < 0                               = True
   | otherwise                            = False
 
 movePiece :: Int -> Tetris -> Tetris
-movePiece i t@(Tetris ((v1, v2), s) w sup) = move (i, v2) t -- doesn't check collide, probably not neccessary.
+movePiece i t@(Tetris ((x, y), s) w sup)
+  | collision $ move (i, 0) t = t
+  | otherwise                 = move (i, 0) t
+
+rotate:: Tetris -> Tetris
+rotate (Tetris ((v1, v2), s) w sup) = (Tetris ((v1, v2), (rotateShape s)) w sup)
 
 rotatePiece :: Tetris -> Tetris
-rotatePiece (Tetris ((v1, v2), s) w sup) = (Tetris ((v1, v2), (rotateShape s)) w sup)
+rotatePiece t@(Tetris ((v1, v2), s) w sup)
+  | collision $ rotate t = t
+  | otherwise            = rotate t
 
-{- rotatePiece :: Tetris -> Tetris
-rotatePiece t
-            | collision (rotate t) = rotate t
-            | otherwise            = t -}
+
+dropNewPiece :: Tetris -> Maybe (Int, Tetris)
+dropNewPiece t@(Tetris ((x, y), s) w sup) = Just (0, (Tetris ((x, y), s') w sup))
+  where
+   s' = place ((startPosition), s)
+
+addPieceToWell :: Shape -> Tetris
+addPieceToWell s = (Tetris ((x, y), s) (combine (shiftShape v s) w) sup)
