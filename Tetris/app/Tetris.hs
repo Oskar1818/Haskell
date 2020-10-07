@@ -1,3 +1,4 @@
+--test
 -- Lab 3, Tetris
 -- Authors: Clara Josefsson, Oskar Sturebrand, Valter Miari
 -- Lab group: 59
