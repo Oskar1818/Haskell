@@ -12,6 +12,6 @@
 /Tetris/app/*
 !/Tetris/app/Tetris.hs
 
-!/src
-/src/*
-!/src/Shapes.hs
+!/Tetris/src
+/Tetris/src/*
+!/Tetris/src/Shapes.hs
