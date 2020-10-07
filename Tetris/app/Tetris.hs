@@ -92,7 +92,7 @@ startTetris rs = Tetris (startPosition, shape1) (emptyShape wellSize) supply
 tick :: Tetris -> Maybe (Int, Tetris)
 tick t@(Tetris (v, s) w sup) =
                              if (collision t == True)
-                              then dropNewPiece t
+                              then Just (0, t)
                               else Just (0, move (0, 1) t )
 
 -- | React to input. The function returns 'Nothing' when it's game over,
@@ -133,5 +133,5 @@ dropNewPiece t@(Tetris ((x, y), s) w sup) = Just (0, (Tetris ((x, y), s') w sup)
   where
    s' = place ((startPosition), s)
 
-addPieceToWell :: Shape -> Tetris
-addPieceToWell s = (Tetris ((x, y), s) (combine (shiftShape v s) w) sup)
+{- addPieceToWell :: Shape -> Tetris
+addPieceToWell s = (Tetris ((x, y), s) (combine (shiftShape v s) w) sup) -}
