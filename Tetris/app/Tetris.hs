@@ -87,7 +87,6 @@ move v1 (Tetris (v2, s) w d) = (Tetris ((v1 `vAdd` v2), s) w d)
 startTetris :: [Double] -> Tetris
 startTetris ds = Tetris (startPosition, shape1) (emptyShape wellSize) supply
   where
-<<<<<<< HEAD
     shape1:supply = genShapes ds
     ls = fromIntegral $ length allShapes
 
@@ -97,10 +96,6 @@ startTetris ds = Tetris (startPosition, shape1) (emptyShape wellSize) supply
     genShapes :: [Double] -> [Shape]
     genShapes (d:ds) = allShapes !! randInt d : genShapes ds
 
-=======
-    shape1:supply = repeat (allShapes !! 1) -- incomplete !!!
---  [x*7 <- xs]
->>>>>>> 95bc777007c380d6f94acba00df7acde71814481
 
 -- returns the new state of the game, where the new tetris-state is modified
 -- by the move-function.
@@ -151,16 +146,13 @@ dropNewPiece (Tetris ((x, y), s) w sup)
     where
      s' = place ((startPosition), s)
      w' = (combine (shiftShape (startPosition) s) w )
-     sup' = startTetris sup
+     sup' = startTetris [Double]
 
 
 {-test, not complete
 addPieceToWell :: Shape -> Tetris
-addPieceToWell s = (Tetris ((x, y), s) (combine (shiftShape (startPosition) s) w) sup)
+addPieceToWell s = (Tetris ((x, y), s) (combine (shiftShape (startPosition) s) w) sup) -}
 
-<<<<<<< HEAD
---(combine (shiftShape (startPosition) s) w) -}
-=======
 -- if tetris, has collided, then return (Int, Tetris)
 -- dropNewPiece :: Tetris -> Maybe (Int, Tetris)
 -- dropNewPiece t = collision t
@@ -169,4 +161,3 @@ addPieceToWell s = (Tetris ((x, y), s) (combine (shiftShape (startPosition) s) w
 
 {- addPieceToWell :: Shape -> Tetris
 addPieceToWell s = (Tetris ((x, y), s) (combine (shiftShape v s) w) sup) -}
->>>>>>> 95bc777007c380d6f94acba00df7acde71814481
