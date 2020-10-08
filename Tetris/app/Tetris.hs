@@ -9,6 +9,8 @@ import ConsoleGUI       -- cabal install ansi-terminal
 --import CodeWorldGUI     -- cabal install codeworld-api
 import Shapes
 
+import Test.QuickCheck
+
 --------------------------------------------------------------------------------
 -- * The code that puts all the piece together
 
@@ -83,9 +85,17 @@ move v1 (Tetris (v2, s) w d) = (Tetris ((v1 `vAdd` v2), s) w d)
 
 -- | The initial game state
 startTetris :: [Double] -> Tetris
-startTetris rs = Tetris (startPosition, shape1) (emptyShape wellSize) supply
+startTetris ds = Tetris (startPosition, shape1) (emptyShape wellSize) supply
   where
-    shape1:supply = repeat (allShapes !! 1) -- incomplete !!!
+    shape1:supply = genShapes ds
+    ls = fromIntegral $ length allShapes
+
+    randInt :: Double -> Int
+    randInt d = floor $ d * ls
+
+    genShapes :: [Double] -> [Shape]
+    genShapes (d:ds) = allShapes !! randInt d : genShapes ds
+
 
 -- returns the new state of the game, where the new tetris-state is modified
 -- by the move-function.
@@ -129,9 +139,17 @@ rotatePiece t@(Tetris ((v1, v2), s) w sup)
 
 
 dropNewPiece :: Tetris -> Maybe (Int, Tetris)
-dropNewPiece t@(Tetris ((x, y), s) w sup) = Just (0, (Tetris ((x, y), s') w sup))
-  where
-   s' = place ((startPosition), s)
+dropNewPiece (Tetris ((x, y), s) w sup)
+  | collision (Tetris ((x, y), s') w' sup') = undefined
+  | otherwise = Just (0, (Tetris ((x, y), s') w' sup'))
+    where
+     s' = place ((startPosition), s)
+     w' = (combine (shiftShape (startPosition) s) w )
+     sup' = startTetris sup
 
-{- addPieceToWell :: Shape -> Tetris
-addPieceToWell s = (Tetris ((x, y), s) (combine (shiftShape v s) w) sup) -}
+
+{-test, not complete
+addPieceToWell :: Shape -> Tetris
+addPieceToWell s = (Tetris ((x, y), s) (combine (shiftShape (startPosition) s) w) sup)
+
+--(combine (shiftShape (startPosition) s) w) -}
