@@ -96,23 +96,24 @@ startTetris ds = Tetris (startPosition, shape1) (emptyShape wellSize) supply
     genShapes :: [Double] -> [Shape]
     genShapes (d:ds) = allShapes !! randInt d : genShapes ds
 
-
+-- if :: Bool -> a -> a -> a
 -- returns the new state of the game, where the new tetris-state is modified
 -- by the move-function.
 tick :: Tetris -> Maybe (Int, Tetris)
 tick t@(Tetris (v, s) w sup) =
-                             if (collision t == True)
+                             if collision t'
                               then dropNewPiece t -- call dropNewPiece
-                              else Just (0, move (0, 1) t )     -- if that fails, game over.else Just (0, move (0, 1) t )
+                              else Just (0, t')     -- if that fails, game over.else Just (0, move (0, 1) t )
+  where t' = move (0, 1) t
 
 -- | React to input. The function returns 'Nothing' when it's game over,
 -- and @'Just' (n,t)@, when the game continues in a new state @t@.
 stepTetris :: Action -> Tetris -> Maybe (Int, Tetris)
 stepTetris Tick t = tick t
-stepTetris MoveLeft t = tick $ movePiece (-1) t
-stepTetris MoveRight t = tick $ movePiece 1 t
+stepTetris MoveLeft t = Just (0, movePiece (-1) t)
+stepTetris MoveRight t = Just (0, movePiece 1 t)
 stepTetris MoveDown t = tick t
-stepTetris Rotate t = tick $ rotatePiece t
+stepTetris Rotate t = Just (0, rotatePiece t)
 stepTetris _ t = Just (0,t) -- incomplete !!!
 
 
@@ -120,7 +121,7 @@ collision :: Tetris -> Bool
 collision (Tetris ((v1, v2), s) w _)
   | place ((v1, v2), s) `overlaps` w     = True
   | v1 + fst (shapeSize s) > wellWidth   = True
-  | v2 + snd (shapeSize s) >= wellHeight = True
+  | v2 + snd (shapeSize s) > wellHeight = True
   | v1 < 0                               = True
   | otherwise                            = False
 
@@ -144,7 +145,7 @@ dropNewPiece (Tetris ((x, y), s) w sup)
   | otherwise = Just (0, (Tetris (startPosition, s') w' sup'))
     where
      s' = head sup
-     w' = combine (shiftShape (x,y) s) w
+     w' = combine (place((x,y), s)) w
      sup' = tail sup
 
 --Tetris (startPosition, head sup) (w, fast modified) (tail sup)

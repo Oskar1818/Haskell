@@ -193,7 +193,7 @@ overlaps (S sh1) (S sh2) = or $ zipWith rowsOverlap sh1 sh2
 
 -- tests if two rows overlap
 rowsOverlap :: Row -> Row -> Bool
-rowsOverlap xs ys = or [(x /= Nothing) && (y /= Nothing) | x <- xs, y <- ys]
+rowsOverlap xs ys = or [(x /= Nothing) && (y /= Nothing) | (x,y) <- zip xs ys]
 
 
 zipShapeWith :: (Square->Square->Square) -> Shape -> Shape -> Shape
