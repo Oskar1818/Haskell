@@ -103,8 +103,7 @@ tick :: Tetris -> Maybe (Int, Tetris)
 tick t@(Tetris (v, s) w sup) =
                              if (collision t == True)
                               then dropNewPiece t -- call dropNewPiece
-                                               -- if that fails, game over.
-                              else Just (0, move (0, 1) t )
+                              else Just (0, move (0, 1) t )     -- if that fails, game over.else Just (0, move (0, 1) t )
 
 -- | React to input. The function returns 'Nothing' when it's game over,
 -- and @'Just' (n,t)@, when the game continues in a new state @t@.
@@ -142,10 +141,10 @@ rotatePiece t@(Tetris ((v1, v2), s) w sup)
 dropNewPiece :: Tetris -> Maybe (Int, Tetris)
 dropNewPiece (Tetris ((x, y), s) w sup)
   | s' `overlaps` w = Nothing
-  | otherwise = Just (0, (Tetris ((x, y), s') w' sup'))
+  | otherwise = Just (0, (Tetris (startPosition, s') w' sup'))
     where
-     s' = place ((startPosition), head sup)
-     w' = (combine (shiftShape (startPosition) (head sup)) w )
+     s' = head sup
+     w' = combine (shiftShape (x,y) s) w
      sup' = tail sup
 
 --Tetris (startPosition, head sup) (w, fast modified) (tail sup)
