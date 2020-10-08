@@ -86,13 +86,15 @@ startTetris :: [Double] -> Tetris
 startTetris rs = Tetris (startPosition, shape1) (emptyShape wellSize) supply
   where
     shape1:supply = repeat (allShapes !! 1) -- incomplete !!!
+--  [x*7 <- xs]
 
 -- returns the new state of the game, where the new tetris-state is modified
 -- by the move-function.
 tick :: Tetris -> Maybe (Int, Tetris)
 tick t@(Tetris (v, s) w sup) =
                              if (collision t == True)
-                              then Just (0, t)
+                              then Just (0, t) -- call dropNewPiece
+                                               -- if that fails, game over.
                               else Just (0, move (0, 1) t )
 
 -- | React to input. The function returns 'Nothing' when it's game over,
@@ -132,6 +134,12 @@ dropNewPiece :: Tetris -> Maybe (Int, Tetris)
 dropNewPiece t@(Tetris ((x, y), s) w sup) = Just (0, (Tetris ((x, y), s') w sup))
   where
    s' = place ((startPosition), s)
+
+-- if tetris, has collided, then return (Int, Tetris)
+-- dropNewPiece :: Tetris -> Maybe (Int, Tetris)
+-- dropNewPiece t = collision t
+--    then tick $ startTetris something
+--
 
 {- addPieceToWell :: Shape -> Tetris
 addPieceToWell s = (Tetris ((x, y), s) (combine (shiftShape v s) w) sup) -}
