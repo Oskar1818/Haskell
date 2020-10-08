@@ -114,7 +114,7 @@ stepTetris MoveLeft t = Just (0, movePiece (-1) t)
 stepTetris MoveRight t = Just (0, movePiece 1 t)
 stepTetris MoveDown t = tick t
 stepTetris Rotate t = Just (0, rotatePiece t)
-stepTetris _ t = Just (0,t) -- incomplete !!!
+stepTetris _ t = tick t
 
 
 collision :: Tetris -> Bool
@@ -140,16 +140,26 @@ rotatePiece t@(Tetris ((v1, v2), s) w sup)
 
 
 dropNewPiece :: Tetris -> Maybe (Int, Tetris)
-dropNewPiece (Tetris ((x, y), s) w sup)
-  | s' `overlaps` w = Nothing
-  | otherwise = Just (0, (Tetris (startPosition, s') w' sup'))
+dropNewPiece t@(Tetris ((x, y), s) w sup)
+  | collision tNew = Nothing -- game over
+  | otherwise = Just (0, tNew)
     where
+     tNew = (Tetris (startPosition, s') w' sup')
      s' = head sup
      w' = combine (place((x,y), s)) w
      sup' = tail sup
 
---Tetris (startPosition, head sup) (w, fast modified) (tail sup)
 
+
+clearLines :: Shape -> (Int, Shape)
+clearLines s = undefined
+
+--isComplete ::
+
+
+-- filter (null) [row]
+-- null[] == True
+--d
 
 
 {-test, not complete
@@ -160,7 +170,7 @@ addPieceToWell s = (Tetris ((x, y), s) (combine (shiftShape (startPosition) s) w
 -- dropNewPiece :: Tetris -> Maybe (Int, Tetris)
 -- dropNewPiece t = collision t
 --    then tick $ startTetris something
---
+--d
 
 {- addPieceToWell :: Shape -> Tetris
 addPieceToWell s = (Tetris ((x, y), s) (combine (shiftShape v s) w) sup) -}
