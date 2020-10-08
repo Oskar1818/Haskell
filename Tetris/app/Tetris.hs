@@ -102,7 +102,7 @@ startTetris ds = Tetris (startPosition, shape1) (emptyShape wellSize) supply
 tick :: Tetris -> Maybe (Int, Tetris)
 tick t@(Tetris (v, s) w sup) =
                              if (collision t == True)
-                              then Just (0, t) -- call dropNewPiece
+                              then dropNewPiece t -- call dropNewPiece
                                                -- if that fails, game over.
                               else Just (0, move (0, 1) t )
 
@@ -141,12 +141,15 @@ rotatePiece t@(Tetris ((v1, v2), s) w sup)
 
 dropNewPiece :: Tetris -> Maybe (Int, Tetris)
 dropNewPiece (Tetris ((x, y), s) w sup)
-  | collision (Tetris ((x, y), s') w' sup') = undefined
+  | s' `overlaps` w = Nothing
   | otherwise = Just (0, (Tetris ((x, y), s') w' sup'))
     where
-     s' = place ((startPosition), s)
-     w' = (combine (shiftShape (startPosition) s) w )
-     sup' = startTetris [Double]
+     s' = place ((startPosition), head sup)
+     w' = (combine (shiftShape (startPosition) (head sup)) w )
+     sup' = tail sup
+
+--Tetris (startPosition, head sup) (w, fast modified) (tail sup)
+
 
 
 {-test, not complete
