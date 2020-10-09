@@ -167,13 +167,12 @@ dropNewPiece t@(Tetris ((x, y), s) w sup)
 clearLines :: Shape -> (Int, Shape)
 clearLines (S xs) = (cleared, shape')
   where
-    -- adds empty rows ontop of the remaining well (shape)
-    shape'    = shiftShape (0,cleared) (S remaining)  -- the new shape with the rows cleared and filled with empty rows
-    -- the that should be cleared, and added as empty rows
-    cleared   = length xs - length remaining -- the amount of rows left
+    shape'    = shiftShape (0,cleared) (S remaining)
+    -- the new shape with the rows cleared and filled with empty rows
+    cleared   = length xs - length remaining
     -- filters away the rows that are full and returns the remaining well
-    remaining = filter notFull xs -- all rows that istn't null
-
+    remaining = filter notFull xs
+    -- all rows that istn't null
 -- evaluates to false if a row is full; to make efficient use of filter func.
 notFull :: Row -> Bool
 notFull xs = not $ and $ map (\l -> l /= Nothing) xs
