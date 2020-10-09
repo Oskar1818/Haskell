@@ -114,7 +114,7 @@ stepTetris MoveLeft t = Just (0, movePiece (-1) t)
 stepTetris MoveRight t = Just (0, movePiece 1 t)
 stepTetris MoveDown t = tick t
 stepTetris Rotate t = Just (0, rotatePiece t)
-stepTetris _ t = tick t
+
 
 
 collision :: Tetris -> Bool
@@ -142,24 +142,44 @@ rotatePiece t@(Tetris ((v1, v2), s) w sup)
 dropNewPiece :: Tetris -> Maybe (Int, Tetris)
 dropNewPiece t@(Tetris ((x, y), s) w sup)
   | collision tNew = Nothing -- game over
-  | otherwise = Just (0, tNew)
+  | otherwise = Just (n, tNew)
     where
      tNew = (Tetris (startPosition, s') w' sup')
      s' = head sup
-     w' = combine (place((x,y), s)) w
+     (n, w') = clearLines $ combine (place((x,y), s)) w
      sup' = tail sup
 
 
 
+
+
 clearLines :: Shape -> (Int, Shape)
-clearLines s = undefined
+clearLines (S xs) = (i, shape')
+  where
+    shape'= clear  -- the new shape with the rows cleared and filled with empty rows
+    i = length xs - length remaining -- the amount of rows left
+    remaining = filter notFull xs -- all rows that istn't null
+    clear = shiftShape (0,i) (S remaining)
 
---isComplete ::
+
+---clear = replicate i emptyRow
+
+notFull :: Row -> Bool
+notFull xs = not $ and $ map (\l -> l /= Nothing) xs
 
 
--- filter (null) [row]
+{- isComplete :: Shape -> Bool
+isComplete (S xs)
+  | lenght xs == 10
+  | otherwise -}
+
+
+
+-- filter :: (a -> Bool) -> [a] -> [a]
 -- null[] == True
---d
+-- length :: t a -> Int
+-- shapeSize :: Shape -> (Int, Int)
+-- shiftShape :: (Int, Int) -> Shape
 
 
 {-test, not complete
