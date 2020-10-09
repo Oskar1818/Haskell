@@ -121,7 +121,7 @@ collision :: Tetris -> Bool
 collision (Tetris ((v1, v2), s) w _)
   | place ((v1, v2), s) `overlaps` w     = True
   | v1 + fst (shapeSize s) > wellWidth   = True
-  | v2 + snd (shapeSize s) > wellHeight = True
+  | v2 + snd (shapeSize s) > wellHeight  = True
   | v1 < 0                               = True
   | otherwise                            = False
 
@@ -150,47 +150,12 @@ dropNewPiece t@(Tetris ((x, y), s) w sup)
      sup' = tail sup
 
 
-
-
-
 clearLines :: Shape -> (Int, Shape)
-clearLines (S xs) = (i, shape')
+clearLines (S xs) = (cleared, shape')
   where
-    shape'= clear  -- the new shape with the rows cleared and filled with empty rows
-    i = length xs - length remaining -- the amount of rows left
+    shape'    = shiftShape (0,cleared) (S remaining)  -- the new shape with the rows cleared and filled with empty rows
+    cleared   = length xs - length remaining -- the amount of rows left
     remaining = filter notFull xs -- all rows that istn't null
-    clear = shiftShape (0,i) (S remaining)
-
-
----clear = replicate i emptyRow
 
 notFull :: Row -> Bool
 notFull xs = not $ and $ map (\l -> l /= Nothing) xs
-
-
-{- isComplete :: Shape -> Bool
-isComplete (S xs)
-  | lenght xs == 10
-  | otherwise -}
-
-
-
--- filter :: (a -> Bool) -> [a] -> [a]
--- null[] == True
--- length :: t a -> Int
--- shapeSize :: Shape -> (Int, Int)
--- shiftShape :: (Int, Int) -> Shape
-
-
-{-test, not complete
-addPieceToWell :: Shape -> Tetris
-addPieceToWell s = (Tetris ((x, y), s) (combine (shiftShape (startPosition) s) w) sup) -}
-
--- if tetris, has collided, then return (Int, Tetris)
--- dropNewPiece :: Tetris -> Maybe (Int, Tetris)
--- dropNewPiece t = collision t
---    then tick $ startTetris something
---d
-
-{- addPieceToWell :: Shape -> Tetris
-addPieceToWell s = (Tetris ((x, y), s) (combine (shiftShape v s) w) sup) -}
