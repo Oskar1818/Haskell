@@ -63,10 +63,12 @@ prop_Tetris (Tetris (_, s) _ _) = prop_Shape s && wellSize == (10,20)
 -- | addBlackRow checks the size of the mapped black-shape uses the replicate
 -- function to add the right amount of Just Black:s
 addWalls :: Shape -> Shape
-addWalls (S xs) = S $ addBlackRow (S xs) ++ map (addBlack) xs ++ addBlackRow (S xs)
+addWalls (S xs) = S $ addBlackRow (S xs) ++ func ++ addBlackRow (S xs)
  where
+  func = map (addBlack) xs
   addBlack :: Row -> Row
   addBlack xs = Just Black : xs ++ [Just Black]
+
 
   addBlackRow :: Shape -> [Row]
   addBlackRow (S xs) = ([blackRow])
