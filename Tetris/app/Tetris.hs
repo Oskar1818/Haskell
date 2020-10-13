@@ -176,3 +176,5 @@ clearLines (S xs) = (cleared, shape')
 -- evaluates to false if a row is full; to make efficient use of filter func.
 notFull :: Row -> Bool
 notFull xs = not $ and $ map (\l -> l /= Nothing) xs
+
+zipShapeWith f (S s1) (S s2) = S $ zipWith (zipWith f) s1 s2

@@ -92,7 +92,7 @@ shapeSize (S (x:xs)) = (length(x), length(x:xs))
 -- ** A3
 -- | Count how many non-empty squares a shape contains
 blockCount :: Shape -> Int
-blockCount (S (x:xs)) = length [x | x <- join(S (x:xs)), x /= Nothing]
+blockCount (S (x:xs)) = length [x | x <- join (S (x:xs)), x /= Nothing]
 
 -- | Helperfunction to aid blockCount, returns individual list of squares from shape
 join :: Shape -> [Square]
@@ -113,7 +113,7 @@ prop_Shape (S xs)
                 | otherwise = avgL == c
                   where
                     c:cs = map length xs
-                    avgL = div (sum (c:cs)) (length xs)
+                    avgL = div (sum (c:cs)) (length xs) -- avr
 
 -- * Test data generators
 
