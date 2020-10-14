@@ -7,6 +7,7 @@ import Test.QuickCheck
 
 -- Use the following simple data type for binary operators
 data BinOp = AddOp | MulOp
+  deriving Eq
 
 --------------------------------------------------------------------------------
 -- * A1
@@ -17,24 +18,40 @@ data BinOp = AddOp | MulOp
 -- x, your data type should not use String or Char anywhere, since this is
 -- not needed.
 
-data Expr = Expr -- change this!
+data Expr = Const Int
+          | Expo Int
+          | Op Expr BinOp Expr
+            deriving Eq
 
 
 --------------------------------------------------------------------------------
 -- * A2
 -- Define the data type invariant that checks that exponents are never negative
 prop_Expr :: Expr -> Bool
-prop_Expr = undefined
+--prop_Expr e@(Const x) = (eval e) == x
+prop_Expr (Expo x) = x < 0
+--prop_Expr e@(Op x AddOp y) = (eval e) == x + y
+--prop_Expr e@(Op x MulOp y) = (eval e) == x * y
+
 
 
 --------------------------------------------------------------------------------
 -- * A3
 -- Make Expr an instance of Show (along the lines of the example in the lecture)
 -- You can use Haskell notation for powers: x^2
--- You should show x^1 as just x. 
+-- You should show x^1 as just x.
+showExpr :: Expr -> String
+showExpr (Const n) = show n
+showExpr (Expo n) = "x^" ++ show n
+showExpr (Op e1 AddOp e2) = showExpr e1 ++ "+" ++ showExpr e2
+showExpr (Op e1 MulOp e2) = showMul e1 ++ "*" ++ showMul e2
+  where
+    showMul ex@(Op e1 AddOp e2) = "(" ++ showExpr ex ++ ")"
+    showMul ex                  = showExpr ex
 
--- instance Show Expr where
---   show = undefined
+
+instance Show Expr where
+   show = showExpr
 
 --------------------------------------------------------------------------------
 -- * A4
@@ -48,17 +65,19 @@ prop_Expr = undefined
 -- could use to find a smaller counterexample for failing tests
 
 instance Arbitrary Expr
-  where arbitrary = undefined
+  where arbitrary = undefined --prop_Expr
 
 
 --------------------------------------------------------------------------------
 -- * A5
 -- Define the eval function which takes a value for x and an expression and
 -- evaluates it
-
+{-
 eval :: Int -> Expr -> Int
-eval = undefined
-
+eval _ (Const i) = i
+eval x (Expo i)  = x (^) i
+eval x (Op e1 AddOp e2) = (x * eval e1) + (x * eval e2)
+eval x (Op e1 MulOp e2) = (x * eval e1) * (x * eval e2) -}
 
 --------------------------------------------------------------------------------
 -- * A6
@@ -66,7 +85,7 @@ eval = undefined
 exprToPoly :: Expr -> Poly
 -- Which converts an expression into a polynomial.
 -- Here it is important to think recursively to just solve the bigger problem
--- by solving the smaller problems and combining them in the right way. 
+-- by solving the smaller problems and combining them in the right way.
 
 exprToPoly = undefined
 
@@ -78,14 +97,14 @@ prop_exprToPoly = undefined
 
 --------------------------------------------------------------------------------
 -- * A7
--- Now define the function going in the other direction, 
+-- Now define the function going in the other direction,
 polyToExpr :: Poly -> Expr
 
 polyToExpr = undefined
 
 
 -- Write (and check) a quickCheck property for this function similar to
--- question 6. 
+-- question 6.
 prop_polyToExpr = undefined
 
 --------------------------------------------------------------------------------
