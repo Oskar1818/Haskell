@@ -7,7 +7,7 @@ import Test.QuickCheck
 
 -- Use the following simple data type for binary operators
 data BinOp = AddOp | MulOp
-  -- deriving Show
+  deriving Eq
 
 --------------------------------------------------------------------------------
 -- * A1
@@ -21,21 +21,27 @@ data BinOp = AddOp | MulOp
 data Expr = Const Int
           | Expo Int
           | Op Expr BinOp Expr
-            -- deriving Show
+            deriving Eq
 
 
 --------------------------------------------------------------------------------
 -- * A2
 -- Define the data type invariant that checks that exponents are never negative
--- prop_Expr :: Expr -> Bool
--- prop_Expr e@(Const x) = e == x
--- prop_Expr (Expo x) = x < 0
+prop_Expr :: Expr -> Bool
+prop_Expr e@(Const x) = (eval x e) == x
+prop_Expr (Expo x) = x < 0
 -- prop_Expr e@(Op e1 AddOp e2) = e == e1 + e2
 -- prop_Expr e@(Op e1 MulOp e2) = e == e1 * e2
 
--- instance Arbitrary Expr where
---     arbitrary = prop_Expr
+-- genExpr :: Gen Expr
+-- genExpr = elements [Const, Expo]
 
+-- Op Const AddOp Const, Op Const MulOp Const
+
+-- (Const x), (Expo x), (Op e1 AddOpp e2), (Op e1 MulOpp e2)
+
+instance Arbitrary Expr where
+    arbitrary = prop_Expr
 
 --------------------------------------------------------------------------------
 -- * A3
@@ -79,10 +85,6 @@ eval x (Expo n)  = x ^ n
 eval x (Op e1 AddOp e2) = (eval x e1) + (eval x e2)
 eval x (Op e1 MulOp e2) = (eval x e1) * (eval x e2)
 
---
--- evalPoly :: Int -> Poly -> Int
--- evalPoly x (Poly cs) = sum $ zipWith (*) cs powersOfx
---          where powersOfx = map (x^) [0..]
 
 --------------------------------------------------------------------------------
 -- * A6
