@@ -4,7 +4,7 @@ module Poly ( Poly     -- The type of polymomials
             , evalPoly -- :: Int -> Poly -> Int
                        -- Convert to and from lists of Int
             , toList   -- :: Poly -> [Int]
-            , fromList -- :: [Int] -> Poly 
+            , fromList -- :: [Int] -> Poly
             )
  where
 
@@ -32,15 +32,15 @@ instance Show Poly where
               where
                 prettyOnes = ["", "x"]
                           -- Comment out the lines below if printing polynomials does not work!
-                          ++ ["x\178", "x\179"] 
+                          ++ ["x\178", "x\179"]
                           ++ map (\c -> 'x':c:[]) ['\8308'..'\8313']
-  
+
 
 instance Arbitrary Poly where
   arbitrary = do
             l <- choose (1,9) -- stick the nice looking powers
             ns <- vectorOf l arbitrary
-            return $ fromList ns 
+            return $ fromList ns
 
 -- |Convert a polynomial to a list representation
 -- @x² + 2x + 3@ would be represented by @[1,2,3]@
@@ -69,8 +69,8 @@ instance Num Poly where
 
 -- |Evaluate a polynomial at the given point
 evalPoly :: Int -> Poly -> Int
-evalPoly x (Poly cs) = sum $ zipWith (*) cs powersOfx 
-         where powersOfx = map (x^) [0..]          
+evalPoly x (Poly cs) = sum $ zipWith (*) cs powersOfx
+         where powersOfx = map (x^) [0..]
 
 -- | Addition for polynomials
 addPoly (Poly p1) (Poly p2) =
@@ -78,10 +78,10 @@ addPoly (Poly p1) (Poly p2) =
      where pad lp p = p ++ replicate (maxlen - lp) 0
            (l1,l2, maxlen) = (length p1, length p2, max l1 l2)
 
-mulPoly (Poly p1) (Poly p2) = poly $ mul p1 p2 
+mulPoly (Poly p1) (Poly p2) = poly $ mul p1 p2
   where
       mul [] p         = []
-      mul (n:ns) p     =  (n `times` p) `plus` timesX (ns `mul` p) 
+      mul (n:ns) p     =  (n `times` p) `plus` timesX (ns `mul` p)
       timesX  p = 0:p
       times n p = map (n*) p
       plus p1 p2 = reverse . toList $ Poly p1 + Poly p2
@@ -92,7 +92,7 @@ prop_PolyOps p1 p2 x = evalHom (*) mulPoly && evalHom (+) addPoly
    where evalHom f g = let p' = p1 `g` p2  in
                            evalPoly x p1 `f` evalPoly x p2 == evalPoly x p'
                            && prop_Poly p'
-                       
+
 ex1    = fromList [1,2,3]
 x      = fromList [1,0]
 xPlus1 = fromList [1,1]
