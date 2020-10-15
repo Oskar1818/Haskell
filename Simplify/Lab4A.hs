@@ -86,7 +86,21 @@ prop_exprToPoly e = eval 1 e == evalPoly 1 (exprToPoly e)
 --------------------------------------------------------------------------------
 -- * A7
 polyToExpr :: Poly -> [Int] --Expr
-polyToExpr = undefined
+polyToExpr p = ls where
+  ls = reverse toList p
+  l = length toList p
+
+-- Endast en skiss hittils, nedanstående steg ska ske rekursivt
+x⁴ + x² + 2
+[1,0,1,0,2] -> [2,0,1,0,1] -- reverse
+
+ls !! l   = 1     ->    1 * Expo l    -- e1
+ls !! l-1 = 0     ->    0 * Expo l-1  -- e2
+ls !! l-2 = 1     ->    1 * Exop l-2  -- e3
+ls !! l-3 = 0     ->    0 * Exop l-3  -- e4
+ls !! l-4 = 2     ->    2 * Exop l-4  -- e5
+
+Op e1 AddOp e2
 
 
 -- polyToExpr :: Poly -> [Int] --Expr
