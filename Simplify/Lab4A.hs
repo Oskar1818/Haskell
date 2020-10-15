@@ -7,7 +7,7 @@ import Test.QuickCheck
 
 -- Use the following simple data type for binary operators
 data BinOp = AddOp | MulOp
-  deriving Eq
+  -- deriving Show
 
 --------------------------------------------------------------------------------
 -- * A1
@@ -21,18 +21,20 @@ data BinOp = AddOp | MulOp
 data Expr = Const Int
           | Expo Int
           | Op Expr BinOp Expr
-            deriving Eq
+            -- deriving Show
 
 
 --------------------------------------------------------------------------------
 -- * A2
 -- Define the data type invariant that checks that exponents are never negative
-prop_Expr :: Expr -> Bool
---prop_Expr e@(Const x) = (eval e) == x
-prop_Expr (Expo x) = x < 0
---prop_Expr e@(Op x AddOp y) = (eval e) == x + y
---prop_Expr e@(Op x MulOp y) = (eval e) == x * y
+-- prop_Expr :: Expr -> Bool
+-- prop_Expr e@(Const x) = e == x
+-- prop_Expr (Expo x) = x < 0
+-- prop_Expr e@(Op e1 AddOp e2) = e == e1 + e2
+-- prop_Expr e@(Op e1 MulOp e2) = e == e1 * e2
 
+-- instance Arbitrary Expr where
+--     arbitrary = prop_Expr
 
 
 --------------------------------------------------------------------------------
@@ -41,14 +43,14 @@ prop_Expr (Expo x) = x < 0
 -- You can use Haskell notation for powers: x^2
 -- You should show x^1 as just x.
 showExpr :: Expr -> String
-showExpr (Const n) = show n
-showExpr (Expo n) = "x^" ++ show n
-showExpr (Op e1 AddOp e2) = showExpr e1 ++ "+" ++ showExpr e2
-showExpr (Op e1 MulOp e2) = showMul e1 ++ "*" ++ showMul e2
+showExpr e = case e of
+  Const n        -> show n
+  Expo n         -> " x^" ++ show n
+  Op e1 AddOp e2 -> showExpr e1 ++ " + " ++ showExpr e2
+  Op e1 MulOp e2 -> showMul  e1 ++ " * " ++ showMul  e2
   where
-    showMul ex@(Op e1 AddOp e2) = "(" ++ showExpr ex ++ ")"
-    showMul ex                  = showExpr ex
-
+    showMul e @(Op e1 AddOp e2) = "(" ++ showExpr e ++ ")"
+    showMul e                  = showExpr e
 
 instance Show Expr where
    show = showExpr
@@ -64,20 +66,23 @@ instance Show Expr where
 -- which gives hints to quickCheck on possible smaller expressions that it
 -- could use to find a smaller counterexample for failing tests
 
-instance Arbitrary Expr
-  where arbitrary = undefined --prop_Expr
-
+ --prop_Expr
 
 --------------------------------------------------------------------------------
 -- * A5
 -- Define the eval function which takes a value for x and an expression and
 -- evaluates it
-{-
+
 eval :: Int -> Expr -> Int
-eval _ (Const i) = i
-eval x (Expo i)  = x (^) i
-eval x (Op e1 AddOp e2) = (x * eval e1) + (x * eval e2)
-eval x (Op e1 MulOp e2) = (x * eval e1) * (x * eval e2) -}
+eval _ (Const n) = n
+eval x (Expo n)  = x ^ n
+eval x (Op e1 AddOp e2) = (eval x e1) + (eval x e2)
+eval x (Op e1 MulOp e2) = (eval x e1) * (eval x e2)
+
+--
+-- evalPoly :: Int -> Poly -> Int
+-- evalPoly x (Poly cs) = sum $ zipWith (*) cs powersOfx
+--          where powersOfx = map (x^) [0..]
 
 --------------------------------------------------------------------------------
 -- * A6
