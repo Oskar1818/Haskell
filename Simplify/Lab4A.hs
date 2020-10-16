@@ -7,14 +7,14 @@ import Test.QuickCheck
 
 -- Use the following simple data type for binary operators
 data BinOp = AddOp | MulOp
-  deriving Eq -- (Show, Eq) -- (1)
+  deriving Eq -- (1)
 
 --------------------------------------------------------------------------------
 -- * A1
 data Expr = Const Int
           | Expo Int
           | Op Expr BinOp Expr
-            deriving Eq -- (Show, Eq) -- (1)
+            deriving Eq -- (1)
 
 --------------------------------------------------------------------------------
 -- * A2
@@ -45,7 +45,7 @@ instance Show Expr where -- (1) -- Do (1) to show as (Const 1)
 genExpr :: Gen Expr
 genExpr = do
   t <- elements [Expo, Const]
-  i <- suchThat arbitrary (\i -> (i >= 0) && (i < 15))
+  i <- elements [0..15] --suchThat arbitrary (\i -> (i >= 0) && (i < 15))
   return (t i)
 
 genBinExpr :: Gen Expr
@@ -85,75 +85,71 @@ prop_exprToPoly e = eval 1 e == evalPoly 1 (exprToPoly e)
 
 --------------------------------------------------------------------------------
 -- * A7
-polyToExpr :: Poly -> [Int] --Expr
-polyToExpr p = ls where
-  ls = reverse toList p
-  l = length toList p
+polyToExpr :: Poly -> Expr
+polyToExpr = polyToExpr' . toList
 
--- Endast en skiss hittils, nedanstående steg ska ske rekursivt
-x⁴ + x² + 2
-[1,0,1,0,2] -> [2,0,1,0,1] -- reverse
+polyToExpr' :: [Int] -> Expr
+polyToExpr' [] = Const 0
+polyToExpr' [n] = Const n
+polyToExpr' (0:xs) = polyToExpr' xs -- i.e. [0, 1, 1] == [1, 1]
+--polyToExpr' (1:xs) = add (Expo (length xs)) (polyToExpr' xs) -- i.e. [1, 1, 1] = first 1 represents x to the power 2 (2 being the number of digits remains)
+polyToExpr' (n:xs) = add (mul (Const n) (Expo (length xs))) (polyToExpr' xs) -- i.e. [3, 1 ,1]
 
-ls !! l   = 1     ->    1 * Expo l    -- e1
-ls !! l-1 = 0     ->    0 * Expo l-1  -- e2
-ls !! l-2 = 1     ->    1 * Exop l-2  -- e3
-ls !! l-3 = 0     ->    0 * Exop l-3  -- e4
-ls !! l-4 = 2     ->    2 * Exop l-4  -- e5
+add (Const 0) e            = e
+add e         (Const 0)    = e
+add (Expo 0)  e            = Op (Const 1) AddOp e
+add e         (Expo 0)     = Op e AddOp (Const 1)
+add (Const n) (Const m)    = Const (n+m)
+add e1        e2           = Op e1 AddOp e2
 
-Op e1 AddOp e2
+mul (Const 0) e            =    (Const 0)
+mul e         (Const 0)    =    (Const 0)
+mul (Const 1) e            =    e
+mul e         (Const 1)    =    e
+mul (Expo 0)  e            =    e
+mul e         (Expo 0)     =    e
+mul (Const n) (Const m)    =    Const (n*m)
+mul e1        e2           =    Op e1 MulOp e2
 
-
--- polyToExpr :: Poly -> [Int] --Expr
--- polyToExpr p = n : polyToExpr x
---   where
---     n = last (toList p) * 2
---     x = tail (toList p)
-
--- poly = in poly case of
---   n@last (toListPoly) = (Const n)
---
---
--- positionen avgör om det är expo eller const
---
--- värdet avgör hur många ggr
---
---
---
--- Expo (position) * värdet
---
--- o = length (toList poly)
---
--- o == 1 => Const (värdet av o)
--- otherwise
---
--- Expo ((length (toList poly)) .. Expo (length (toList poly) -1)
-
--- reverse [2,0,0,0,0] tail list = 0
--- length list = 5, 0, x^1, 1, x^2, 2 ... x^4 4
-
--- Write (and check) a quickCheck property for this function similar to
--- question 6.
 prop_polyToExpr :: Poly -> Bool
-prop_polyToExpr = undefined
+prop_polyToExpr p = evalPoly 1 p == eval 1 (polyToExpr p)
 
 --------------------------------------------------------------------------------
 -- * A8
--- Write a function
 simplify :: Expr -> Expr
--- which simplifies an expression by converting it to a polynomial
--- and back again
-simplify = undefined
-
+simplify = polyToExpr . exprToPoly
 --------------------------------------------------------------------------------
 -- * A9
 -- Write a quickCheck property
 prop_noJunk :: Expr -> Bool
+prop_noJunk = noJunk . simplify
 
---that checks that a simplified expression does not contain any "junk":
---where junk is defined to be multiplication by one or zero,
---addition of zero, addition or multiplication of numbers, or x to the
---power zero. (You may need to fix A7)
+noJunk :: Expr -> Bool
 
-prop_noJunk = undefined
+noJunk      (Expo 0)                         = False
+
+noJunk (Op  (Const _)  _      (Const _))     = False
+noJunk (Op  (Expo 0)   _      e)             = False
+noJunk (Op  e          _      (Expo 0) )     = False
+noJunk (Op  (Const 0)  _      e)             = False
+noJunk (Op  e          _      (Const 0))     = False
+noJunk (Op  (Const 1)  MulOp  e)             = False
+noJunk (Op  e          MulOp  (Const 1) )    = False
+noJunk (Op  e1         MulOp  e2)            = True
+noJunk (Op  e1         AddOp  e2)            = True
+
+noJunk _                                     = True
+
+
+
+
+
+
+
+
+
+
+
+
 
 --------------------------------------------------------------------------------
