@@ -1,38 +1,29 @@
 
-data QA = Q QA QA String | Answer String
+data QA = Q QA QA String | Answer String -- TODO option for follow up question after answer
   deriving (Show, Read)
 
--- A answer answer question
+data Either a b = Left a | Right b
 
-
--- t1 = Q "?" mm qe
---
 
 defaultQA = Q y n "Is she from Europe? y/n"
 
 -- Yes branch
 y = Q mc qe "Is she a scientist?"
-  mc = Answer "Marie Curie"
-  qe = Answer "Queen Elizabeth II"
+mc = Answer "Marie Curie"
+qe = Answer "Queen Elizabeth II"
 
 -- No branch
 n = Q mm nno "Is she an actress?"
-  mm = Answer "Marilyn Monroe"
-  nno = Answer "Hilary Clinton"
+mm = Answer "Marilyn Monroe"
+nno = Answer "Hilary Clinton"
 
-
-
--- question :: QA -> String
--- question (Q sq sq que) = do
---   putStrLn (que "")
---   a <- getLine
 -- helper function for you
 writeDefaultQA :: IO ()
 writeDefaultQA = do
   writeFile "./Famous.qa" (show defaultQA)
 
-tryIOError :: IO a -> IO (Either IOError a)
-tryIOError = undefined
+-- TODO tryIOError :: IO a -> IO (Either IOError a)
+-- tryIOError = undefined
 
 -- players will see this main function
 main :: IO ()
@@ -42,31 +33,61 @@ main = do
   -- inputFromFile :: String
   let qa = read inputFromFile :: QA
   -- GAME loop here
-  gameLoop qa
-  -- write the ONLINE qa to file
+  play qa
+  -- write the ONLINE qa to file, when the gameLoop ends. TODO Write the tree to Famous.qa
+  -- use amendQA
   return ()
 
-gameLoop :: QA -> IO ()
+play :: QA -> IO QA
+play qa = do
+  qa' <- gameLoop qa
+  play qa'
+
+gameLoop :: QA -> IO QA
 gameLoop (Answer name) = do
-  putStrLn name
-gameLoop qa@(Q yes no question) = do
-  putStrLn question
-  userReply <- getLine
-  case userReply of
-    "y" -> gameLoop yes
-    "n"  -> gameLoop no --(amendQA qa) --no
-
--- gameLoop yes =
+  putStrLn $ "Best guess, " ++ name ++ ". Was that correct? y/n"
 --
--- yes == mm == Answer "Mariyn"
+  return (Answer name)
+  -- a <- getLine
+  -- yesNoQuestion a
+gameLoop qa@(Q yes no q) = do
+  anw <- yesNoQuestion q
+  case anw of
+    True -> do
+      yes' <- gameLoop yes
+      return (Q yes' no q)
+    False -> do
+      no' <- gameLoop no
+      return (Q yes no' q)
 
-amendQA :: QA -> QA
-amendQA _ = undefined
+   -- if anw then gameLoop yes' else gameLoop no'
 
 
-{-
-question :: QA -> IO ()
-question (Q sq sq que) = do
-  putStrLn (que)
-  a <-
--}
+-- case yesNoQuestion q of
+-- True  -> do yes' <- gameLoop yes
+--              return (Q yes' no q)
+-- False -> do no' <- gameLoop no
+--              return (Q yes no' q) --(amendQA qa) --n
+
+-- amendQA :: QA -> QA
+-- amendQA _ = case yesNoQuestion q of
+--     True  -> do yes' <- gameLoop yes
+--                return (Q yes' no q)
+--     False -> do no' <- gameLoop no
+--                return (Q yes no' q)
+--  writeFile "./Famous.qa" (the updated Tree aka QA)
+
+
+
+question :: String -> IO String
+question s = do
+  putStrLn s
+  a <- getLine
+  return (a)
+
+yesNoQuestion :: String -> IO Bool
+yesNoQuestion s = do
+  reply <- question s
+  case reply of
+    "y" -> return True
+    "n" -> return False
