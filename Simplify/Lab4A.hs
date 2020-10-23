@@ -1,4 +1,5 @@
--- Authors:
+-- Authors: Valter Miari, Clara Josefsson, Oskar Sturebrand
+-- Lab group: 59
 -- Date:
 
 import Poly
@@ -22,14 +23,16 @@ data Expr = Const Int
 prop_Expr :: Expr -> Bool
 prop_Expr e@(Const n)        = (eval 1 e) == n
 prop_Expr (Expo n)           = n >= 0
-prop_Expr e@(Op e1 AddOp e2) = e == e
-prop_Expr e@(Op e1 MulOp e2) = e == e
+prop_Expr e@(Op e1 AddOp e2) = prop_Expr e1 && prop_Expr e2
+prop_Expr e@(Op e1 MulOp e2) = prop_Expr e1 && prop_Expr e2
 
 --------------------------------------------------------------------------------
 -- * A3
 showExpr :: Expr -> String
 showExpr e = case e of
   Const n        -> show n
+  Expo 0         -> "1"
+  Expo 1         -> "x"
   Expo n         -> "x^" ++ show n
   Op e1 AddOp e2 -> showExpr e1 ++ " + " ++ showExpr e2
   Op e1 MulOp e2 -> showMul  e1 ++ " * " ++ showMul  e2
@@ -42,22 +45,30 @@ instance Show Expr where -- (1) -- Do (1) to show as (Const 1)
 
 --------------------------------------------------------------------------------
 -- * A4
-genExpr :: Gen Expr
-genExpr = do
-  t <- elements [Expo, Const]
-  i <- elements [0..15] --suchThat arbitrary (\i -> (i >= 0) && (i < 15))
-  return (t i)
+genExpo :: Gen Expr
+genExpo = do
+  i <- arbitrary
+  return (Expo (abs i))
 
-genBinExpr :: Gen Expr
-genBinExpr = do
+genConst :: Gen Expr
+genConst = do
+  n <- arbitrary
+  return $ Const n
+
+genBinExpr :: Int -> Gen Expr
+genBinExpr s = do
   o <- elements [AddOp, MulOp]
-  l <- arbitrary
-  r <- arbitrary
+  let s' = div s 2
+  l <- genExpr s'
+  r <- genExpr s'
   return (Op l o r)
 
 -- sample (arbitrary :: Gen Expr)
 instance Arbitrary Expr where
-    arbitrary = frequency [(3, genExpr), (1, genBinExpr)]
+    arbitrary = sized genExpr
+
+genExpr :: Int -> Gen Expr
+genExpr s = frequency [(1, genExpo), (1, genConst), (s, genBinExpr s)]
 
 --------------------------------------------------------------------------------
 -- * A5
@@ -77,11 +88,11 @@ exprToPoly e = case e of
   (Op e1 AddOp e2) -> (exprToPoly e1) + (exprToPoly e2)
   (Op e1 MulOp e2) -> (exprToPoly e1) * (exprToPoly e2)
 
-ex1 = Op (Const 1) MulOp (Op (Op (Expo 2) MulOp (Op (Const 1) AddOp (Expo 2))) AddOp (Const 2))
+ex1 = Op (Const 1) MulOp (Op (Op (Expo 1) MulOp (Op (Const 1) AddOp (Expo 2))) AddOp (Const 2))
 ex3 = Op (Op (Const 1) AddOp (Const 2)) MulOp (Const 3)
 
-prop_exprToPoly :: Expr -> Bool
-prop_exprToPoly e = eval 1 e == evalPoly 1 (exprToPoly e)
+prop_exprToPoly :: Int -> Expr -> Bool
+prop_exprToPoly n e = eval n e == evalPoly n (exprToPoly e)
 
 --------------------------------------------------------------------------------
 -- * A7
@@ -111,8 +122,8 @@ mul e         (Expo 0)     =    e
 mul (Const n) (Const m)    =    Const (n*m)
 mul e1        e2           =    Op e1 MulOp e2
 
-prop_polyToExpr :: Poly -> Bool
-prop_polyToExpr p = evalPoly 1 p == eval 1 (polyToExpr p)
+prop_polyToExpr :: Int -> Poly -> Bool
+prop_polyToExpr n p = evalPoly n p == eval n (polyToExpr p)
 
 --------------------------------------------------------------------------------
 -- * A8
@@ -135,10 +146,11 @@ noJunk (Op  (Const 0)  _      e)             = False
 noJunk (Op  e          _      (Const 0))     = False
 noJunk (Op  (Const 1)  MulOp  e)             = False
 noJunk (Op  e          MulOp  (Const 1) )    = False
-noJunk (Op  e1         MulOp  e2)            = True
-noJunk (Op  e1         AddOp  e2)            = True
+noJunk (Op  e1         _  e2)                = noJunk e1 && noJunk e2
 
 noJunk _                                     = True
+
+
 
 
 
