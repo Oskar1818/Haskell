@@ -1,2 +1,1 @@
-# Labs-Haskell
-Lab files in Haskell
+# haskell laborations
