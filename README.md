@@ -1,2 +1,2 @@
 # Haskell labs
-some labs done in haskell
+some small scale projects done in haskell
